@@ -35,6 +35,37 @@
 <body>
 
   <!-- =====================================================
+       TERRÁRIO PRINCIPAL
+       (elemento fixo animado pelo scroll)
+  ====================================================== -->
+
+  <div
+    class="terrarium-float"
+    id="terrariumFloat"
+  >
+
+    <div class="terrarium-intro">
+
+      <div
+        class="terrarium-shadow"
+        id="terrariumShadow"
+      ></div>
+
+      <img
+        src="assets/img - terrário.png"
+        alt="Terrário Arte Vaso"
+        id="terrariumImage"
+        draggable="false"
+        decoding="async"
+      >
+
+    </div>
+
+  </div>
+
+
+
+  <!-- =====================================================
        HERO
   ====================================================== -->
 
@@ -187,63 +218,77 @@
       </div>
 
 
-      <div class="botanical-symbol">
+      <!-- PALCO DO TERRÁRIO
+           (posição inicial da imagem animada) -->
 
-        <span class="symbol-line"></span>
+      <div
+        class="hero-stage"
+        id="heroStage"
+        aria-hidden="true"
+      ></div>
 
-        <svg
-          width="38"
-          height="52"
-          viewBox="0 0 38 52"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
+
+      <div class="hero-actions">
+
+        <div class="botanical-symbol">
+
+          <span class="symbol-line"></span>
+
+          <svg
+            width="38"
+            height="52"
+            viewBox="0 0 38 52"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+
+            <path
+              d="M19 48C19 32 20 18 32 6"
+              stroke="currentColor"
+              stroke-width="1.2"
+            />
+
+            <path
+              d="M20 33C13 29 8 24 7 19"
+              stroke="currentColor"
+              stroke-width="1.2"
+            />
+
+            <path
+              d="M20 27C27 24 31 19 32 14"
+              stroke="currentColor"
+              stroke-width="1.2"
+            />
+
+            <path
+              d="M19 40C12 38 8 34 6 29"
+              stroke="currentColor"
+              stroke-width="1.2"
+            />
+
+          </svg>
+
+          <span class="symbol-line"></span>
+
+        </div>
+
+
+        <a
+          href="#terrarios"
+          class="hero-button"
         >
 
-          <path
-            d="M19 48C19 32 20 18 32 6"
-            stroke="currentColor"
-            stroke-width="1.2"
-          />
+          <span>
+            CONHEÇA OS TERRÁRIOS
+          </span>
 
-          <path
-            d="M20 33C13 29 8 24 7 19"
-            stroke="currentColor"
-            stroke-width="1.2"
-          />
+          <span class="arrow">
+            →
+          </span>
 
-          <path
-            d="M20 27C27 24 31 19 32 14"
-            stroke="currentColor"
-            stroke-width="1.2"
-          />
-
-          <path
-            d="M19 40C12 38 8 34 6 29"
-            stroke="currentColor"
-            stroke-width="1.2"
-          />
-
-        </svg>
-
-        <span class="symbol-line"></span>
+        </a>
 
       </div>
-
-
-      <a
-        href="#terrarios"
-        class="hero-button"
-      >
-
-        <span>
-          CONHEÇA OS TERRÁRIOS
-        </span>
-
-        <span class="arrow">
-          →
-        </span>
-
-      </a>
 
     </section>
 
@@ -268,256 +313,7 @@
 
 
   <!-- =====================================================
-       PRODUTOS
-  ====================================================== -->
-
-  <section
-    class="products-section"
-    id="terrarios"
-  >
-
-    <div class="products-header">
-
-      <span class="products-eyebrow">
-        ENCONTRE O SEU
-      </span>
-
-      <h2>
-        PEQUENO MUNDO
-      </h2>
-
-    </div>
-
-
-    <div class="products-carousel">
-
-      <button
-        class="carousel-arrow carousel-prev"
-        aria-label="Produto anterior"
-        type="button"
-      >
-        ←
-      </button>
-
-
-      <div class="products-track-wrapper">
-
-        <div class="products-track">
-
-          <!-- FLORESTA -->
-
-          <article class="product-card">
-
-            <div class="product-image">
-
-              <img
-                src="assets/terrário floresta.jpg"
-                alt="Terrário Floresta"
-                draggable="false"
-              >
-
-            </div>
-
-            <div class="product-info">
-
-              <h3>
-                FLORESTA
-              </h3>
-
-              <span>
-                Polyscias
-              </span>
-
-              <strong>
-                R$ 105,00
-              </strong>
-
-            </div>
-
-          </article>
-
-
-          <!-- DESERTO -->
-
-          <article class="product-card">
-
-            <div class="product-image">
-
-              <img
-                src="assets/terrário deserto.jpg"
-                alt="Terrário Deserto"
-                draggable="false"
-              >
-
-            </div>
-
-            <div class="product-info">
-
-              <h3>
-                DESERTO
-              </h3>
-
-              <span>
-                Suculento
-              </span>
-
-              <strong>
-                R$ 79,00
-              </strong>
-
-            </div>
-
-          </article>
-
-
-          <!-- TROPICAL -->
-
-          <article class="product-card">
-
-            <div class="product-image">
-
-              <img
-                src="assets/terrário tropical.jpg"
-                alt="Terrário Tropical"
-                draggable="false"
-              >
-
-            </div>
-
-            <div class="product-info">
-
-              <h3>
-                TROPICAL
-              </h3>
-
-              <span>
-                Fittonia
-              </span>
-
-              <strong>
-                R$ 149,00
-              </strong>
-
-            </div>
-
-          </article>
-
-
-          <!-- MINIMALISTA -->
-
-          <article class="product-card">
-
-            <div class="product-image">
-
-              <img
-                src="assets/Terrário minimalista.jpg"
-                alt="Terrário Minimalista"
-                draggable="false"
-              >
-
-            </div>
-
-            <div class="product-info">
-
-              <h3>
-                MINIMALISTA
-              </h3>
-
-              <span>
-                Miniatura
-              </span>
-
-              <strong>
-                R$ 105,00
-              </strong>
-
-            </div>
-
-          </article>
-
-
-          <!-- MATA ATLÂNTICA -->
-
-          <article class="product-card">
-
-            <div class="product-image">
-
-              <img
-                src="assets/mata atlântica.jpg"
-                alt="Terrário Mata Atlântica"
-                draggable="false"
-              >
-
-            </div>
-
-            <div class="product-info">
-
-              <h3>
-                MATA ATLÂNTICA
-              </h3>
-
-              <span>
-                Mini terrário
-              </span>
-
-              <strong>
-                R$ 229,00
-              </strong>
-
-            </div>
-
-          </article>
-
-        </div>
-
-      </div>
-
-
-      <button
-        class="carousel-arrow carousel-next"
-        aria-label="Próximo produto"
-        type="button"
-      >
-        →
-      </button>
-
-    </div>
-
-
-    <div class="carousel-dots">
-
-      <button
-        class="carousel-dot active"
-        data-slide="0"
-        type="button"
-      ></button>
-
-      <button
-        class="carousel-dot"
-        data-slide="1"
-        type="button"
-      ></button>
-
-      <button
-        class="carousel-dot"
-        data-slide="2"
-        type="button"
-      ></button>
-
-      <button
-        class="carousel-dot"
-        data-slide="3"
-        type="button"
-      ></button>
-
-    </div>
-
-  </section>
-
-
-
-  <!-- =====================================================
-       NOVA SEÇÃO
+       EXPERIÊNCIA DO TERRÁRIO
        CONEXÃO VIVA
   ====================================================== -->
 
@@ -526,9 +322,19 @@
     id="universo"
   >
 
-    <!-- FUNDO COM OS TERRÁRIOS -->
+    <!-- FUNDO COM OS QUATRO VASOS -->
 
     <div class="universe-background"></div>
+
+
+    <!-- PALCO DE POUSO DO TERRÁRIO
+         (área superior usada no mobile/tablet) -->
+
+    <div
+      class="universe-stage"
+      id="universeStage"
+      aria-hidden="true"
+    ></div>
 
 
     <!-- CONTEÚDO PRINCIPAL -->
@@ -842,6 +648,255 @@
 
 
       </div>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- =====================================================
+       PRODUTOS
+  ====================================================== -->
+
+  <section
+    class="products-section"
+    id="terrarios"
+  >
+
+    <div class="products-header">
+
+      <span class="products-eyebrow">
+        ENCONTRE O SEU
+      </span>
+
+      <h2>
+        PEQUENO MUNDO
+      </h2>
+
+    </div>
+
+
+    <div class="products-carousel">
+
+      <button
+        class="carousel-arrow carousel-prev"
+        aria-label="Produto anterior"
+        type="button"
+      >
+        ←
+      </button>
+
+
+      <div class="products-track-wrapper">
+
+        <div class="products-track">
+
+          <!-- FLORESTA -->
+
+          <article class="product-card">
+
+            <div class="product-image">
+
+              <img
+                src="assets/terrário floresta.jpg"
+                alt="Terrário Floresta"
+                draggable="false"
+              >
+
+            </div>
+
+            <div class="product-info">
+
+              <h3>
+                FLORESTA
+              </h3>
+
+              <span>
+                Polyscias
+              </span>
+
+              <strong>
+                R$ 105,00
+              </strong>
+
+            </div>
+
+          </article>
+
+
+          <!-- DESERTO -->
+
+          <article class="product-card">
+
+            <div class="product-image">
+
+              <img
+                src="assets/terrário deserto.jpg"
+                alt="Terrário Deserto"
+                draggable="false"
+              >
+
+            </div>
+
+            <div class="product-info">
+
+              <h3>
+                DESERTO
+              </h3>
+
+              <span>
+                Suculento
+              </span>
+
+              <strong>
+                R$ 79,00
+              </strong>
+
+            </div>
+
+          </article>
+
+
+          <!-- TROPICAL -->
+
+          <article class="product-card">
+
+            <div class="product-image">
+
+              <img
+                src="assets/terrário tropical.jpg"
+                alt="Terrário Tropical"
+                draggable="false"
+              >
+
+            </div>
+
+            <div class="product-info">
+
+              <h3>
+                TROPICAL
+              </h3>
+
+              <span>
+                Fittonia
+              </span>
+
+              <strong>
+                R$ 149,00
+              </strong>
+
+            </div>
+
+          </article>
+
+
+          <!-- MINIMALISTA -->
+
+          <article class="product-card">
+
+            <div class="product-image">
+
+              <img
+                src="assets/Terrário minimalista.jpg"
+                alt="Terrário Minimalista"
+                draggable="false"
+              >
+
+            </div>
+
+            <div class="product-info">
+
+              <h3>
+                MINIMALISTA
+              </h3>
+
+              <span>
+                Miniatura
+              </span>
+
+              <strong>
+                R$ 105,00
+              </strong>
+
+            </div>
+
+          </article>
+
+
+          <!-- MATA ATLÂNTICA -->
+
+          <article class="product-card">
+
+            <div class="product-image">
+
+              <img
+                src="assets/mata atlântica.jpg"
+                alt="Terrário Mata Atlântica"
+                draggable="false"
+              >
+
+            </div>
+
+            <div class="product-info">
+
+              <h3>
+                MATA ATLÂNTICA
+              </h3>
+
+              <span>
+                Mini terrário
+              </span>
+
+              <strong>
+                R$ 229,00
+              </strong>
+
+            </div>
+
+          </article>
+
+        </div>
+
+      </div>
+
+
+      <button
+        class="carousel-arrow carousel-next"
+        aria-label="Próximo produto"
+        type="button"
+      >
+        →
+      </button>
+
+    </div>
+
+
+    <div class="carousel-dots">
+
+      <button
+        class="carousel-dot active"
+        data-slide="0"
+        type="button"
+      ></button>
+
+      <button
+        class="carousel-dot"
+        data-slide="1"
+        type="button"
+      ></button>
+
+      <button
+        class="carousel-dot"
+        data-slide="2"
+        type="button"
+      ></button>
+
+      <button
+        class="carousel-dot"
+        data-slide="3"
+        type="button"
+      ></button>
 
     </div>
 

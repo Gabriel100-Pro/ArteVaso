@@ -1004,5 +1004,1010 @@ document.addEventListener(
 
     }
 
+
+    /* =====================================================
+       TERRÁRIO PRINCIPAL
+       ANIMAÇÃO DE SCROLL (HERO → EXPERIÊNCIA)
+
+       O terrário é um elemento fixo. A cada frame
+       calculamos, a partir do scroll real, onde ele
+       deve estar entre a posição inicial (palco da
+       hero) e a posição final (espaço central entre
+       os quatro vasos do fundo da segunda seção).
+    ====================================================== */
+
+    const terrariumFloat =
+      document.querySelector(
+        "#terrariumFloat"
+      );
+
+    const terrariumImage =
+      document.querySelector(
+        "#terrariumImage"
+      );
+
+    const terrariumShadow =
+      document.querySelector(
+        "#terrariumShadow"
+      );
+
+    const heroStage =
+      document.querySelector(
+        "#heroStage"
+      );
+
+    const universeStage =
+      document.querySelector(
+        "#universeStage"
+      );
+
+    const universeBackground =
+      document.querySelector(
+        ".universe-background"
+      );
+
+
+    if (
+      terrariumFloat &&
+      terrariumImage &&
+      terrariumShadow &&
+      heroStage &&
+      universeStage &&
+      universeBackground &&
+      universeSection
+    ) {
+
+      /* =================================================
+         CONSTANTES DAS IMAGENS
+      ================================================== */
+
+      /*
+        As duas imagens (terrário e fundo)
+        têm 1536 x 1024 px.
+      */
+
+      const IMAGE_RATIO = 1536 / 1024;
+
+
+      /*
+        Área ocupada pelo vidro dentro do
+        PNG transparente (fração da imagem).
+        Usada para centralizar o vidro, e não
+        a caixa da imagem.
+      */
+
+      const BOWL = {
+        left:   261 / 1536,
+        right:  1274 / 1536,
+        top:    67 / 1024,
+        bottom: 1008 / 1024
+      };
+
+      const BOWL_W =
+        BOWL.right - BOWL.left;
+
+      const BOWL_H =
+        BOWL.bottom - BOWL.top;
+
+      const BOWL_CX =
+        (BOWL.left + BOWL.right) / 2;
+
+      const BOWL_CY =
+        (BOWL.top + BOWL.bottom) / 2;
+
+
+      /*
+        Ponto central entre os quatro vasos
+        do fundo (fração da imagem de fundo).
+      */
+
+      const FOCUS = {
+        x: 0.733,
+        y: 0.464
+      };
+
+
+      /*
+        Largura do vidro ao pousar, em fração
+        da largura renderizada do fundo
+        (desktop / modo palco).
+      */
+
+      const LANDING_BOWL_RATIO = 0.26;
+
+      const LANDING_BOWL_RATIO_STAGE = 0.235;
+
+
+      /*
+        Rotação máxima no meio da viagem.
+      */
+
+      const MAX_TILT = 9;   /* rotate (Z)  */
+
+      const MAX_TURN = 22;  /* rotateY     */
+
+
+      const stageQuery =
+        window.matchMedia(
+          "(max-width: 900px)"
+        );
+
+      const reducedMotion =
+        window.matchMedia(
+          "(prefers-reduced-motion: reduce)"
+        );
+
+
+
+      /* =================================================
+         ESTADO
+      ================================================== */
+
+      const state = {
+
+        start: {
+          cx: 0,
+          cy: 0,
+          width: 0
+        },
+
+        end: {
+          cx: 0,
+          cy: 0,
+          width: 0
+        },
+
+        scrollStart: 0,
+
+        scrollEnd: 1,
+
+        baseWidth: 760,
+
+        baseHeight: 760 / IMAGE_RATIO,
+
+        shadowBaseW: 760,
+
+        shadowBaseH: 120,
+
+        progress: 0,
+
+        lastTime: 0,
+
+        rafId: null,
+
+        ready: false
+
+      };
+
+
+
+      /* =================================================
+         UTILITÁRIOS
+      ================================================== */
+
+      function clamp(
+        value,
+        min,
+        max
+      ) {
+
+        return Math.min(
+          max,
+          Math.max(
+            min,
+            value
+          )
+        );
+
+      }
+
+
+      function lerp(
+        a,
+        b,
+        t
+      ) {
+
+        return a + (b - a) * t;
+
+      }
+
+
+      function easeInOutCubic(t) {
+
+        return t < 0.5
+          ? 4 * t * t * t
+          : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+      }
+
+
+      function parseBackgroundPosition(
+        value
+      ) {
+
+        const parts =
+          String(value)
+            .match(/-?[\d.]+%/g) || [];
+
+
+        const x =
+          parts[0]
+            ? parseFloat(parts[0]) / 100
+            : 0.5;
+
+        const y =
+          parts[1]
+            ? parseFloat(parts[1]) / 100
+            : 0.5;
+
+
+        return { x, y };
+
+      }
+
+
+
+      /* =================================================
+         MEDIÇÃO
+         (posição inicial, posição final
+         e intervalo de scroll)
+      ================================================== */
+
+      function measure() {
+
+        const viewportW =
+          window.innerWidth;
+
+        const viewportH =
+          window.innerHeight;
+
+        const scrollY =
+          window.scrollY;
+
+
+
+        /* ---------- HERO: POSIÇÃO INICIAL ---------- */
+
+        const heroRect =
+          heroStage.getBoundingClientRect();
+
+
+        const isMobile =
+          viewportW <= 600;
+
+
+        /*
+          Limite de largura da imagem na hero:
+          no tablet o vidro não deve encostar
+          nas bordas da tela.
+        */
+
+        const maxStartWidth =
+          isMobile
+            ? viewportW - 28
+            : Math.min(
+                1040,
+                (viewportW * 0.72) / BOWL_W
+              );
+
+
+        /*
+          O vidro precisa caber no palco
+          da hero, em largura e altura.
+        */
+
+        const startWidth =
+          Math.max(
+            180,
+            Math.min(
+              heroRect.width / BOWL_W,
+              (heroRect.height / BOWL_H) * IMAGE_RATIO,
+              maxStartWidth
+            )
+          );
+
+
+        state.start.cx =
+          heroRect.left +
+          heroRect.width / 2;
+
+        state.start.cy =
+          heroRect.top +
+          scrollY +
+          heroRect.height / 2;
+
+        state.start.width =
+          startWidth;
+
+
+
+        /* ---------- SEGUNDA SEÇÃO: POSIÇÃO FINAL ---------- */
+
+        const sectionRect =
+          universeSection.getBoundingClientRect();
+
+        const sectionW =
+          sectionRect.width;
+
+        const sectionH =
+          sectionRect.height;
+
+
+        /*
+          "box" = retângulo da imagem de fundo
+          renderizada, relativo à seção.
+        */
+
+        let box;
+
+
+        if (stageQuery.matches) {
+
+          /*
+            MOBILE / TABLET
+            A imagem é dimensionada pela altura
+            do palco superior e deslocada para
+            que o espaço entre os vasos fique
+            centralizado horizontalmente.
+          */
+
+          const stageH =
+            universeStage.getBoundingClientRect()
+              .height || 480;
+
+
+          let renderH = stageH;
+
+          let renderW =
+            renderH * IMAGE_RATIO;
+
+
+          if (renderW < sectionW) {
+
+            renderW = sectionW;
+
+            renderH =
+              renderW / IMAGE_RATIO;
+
+          }
+
+
+          let offsetX =
+            sectionW / 2 -
+            FOCUS.x * renderW;
+
+
+          offsetX =
+            clamp(
+              offsetX,
+              sectionW - renderW,
+              0
+            );
+
+
+          box = {
+            x: offsetX,
+            y: 0,
+            w: renderW,
+            h: renderH
+          };
+
+
+          universeSection.classList.add(
+            "is-stage-mode"
+          );
+
+          universeBackground.style.backgroundSize =
+            `${renderW}px ${renderH}px`;
+
+          universeBackground.style.backgroundPosition =
+            `${offsetX}px 0px`;
+
+          universeBackground.style.setProperty(
+            "--universe-bg-h",
+            `${renderH}px`
+          );
+
+        } else {
+
+          /*
+            DESKTOP
+            Mesma matemática do
+            background-size: cover.
+          */
+
+          universeSection.classList.remove(
+            "is-stage-mode"
+          );
+
+          universeBackground.style.backgroundSize = "";
+
+          universeBackground.style.backgroundPosition = "";
+
+          universeBackground.style.removeProperty(
+            "--universe-bg-h"
+          );
+
+
+          const scale =
+            Math.max(
+              sectionW / 1536,
+              sectionH / 1024
+            );
+
+          const renderW =
+            1536 * scale;
+
+          const renderH =
+            1024 * scale;
+
+
+          const position =
+            parseBackgroundPosition(
+              getComputedStyle(
+                universeBackground
+              ).backgroundPosition
+            );
+
+
+          box = {
+            x: (sectionW - renderW) * position.x,
+            y: (sectionH - renderH) * position.y,
+            w: renderW,
+            h: renderH
+          };
+
+        }
+
+
+        const landingBowlW =
+          clamp(
+            box.w *
+            (
+              stageQuery.matches
+                ? LANDING_BOWL_RATIO_STAGE
+                : LANDING_BOWL_RATIO
+            ),
+            170,
+            520
+          );
+
+
+        state.end.width =
+          landingBowlW / BOWL_W;
+
+        state.end.cx =
+          sectionRect.left +
+          box.x +
+          FOCUS.x * box.w;
+
+        state.end.cy =
+          sectionRect.top +
+          scrollY +
+          box.y +
+          FOCUS.y * box.h;
+
+
+
+        /* ---------- INTERVALO DE SCROLL ---------- */
+
+        /*
+          A viagem começa no topo da página e
+          termina quando o ponto de pouso está
+          no centro da tela.
+        */
+
+        state.scrollStart = 0;
+
+        state.scrollEnd =
+          Math.max(
+            state.end.cy - viewportH * 0.5,
+            viewportH * 0.6
+          );
+
+
+
+        /* ---------- TAMANHO BASE DA IMAGEM ---------- */
+
+        /*
+          A imagem recebe a maior largura
+          necessária; o tamanho real durante
+          a animação é feito com scale().
+        */
+
+        const baseWidth =
+          Math.ceil(
+            Math.max(
+              state.start.width,
+              state.end.width
+            )
+          );
+
+
+        if (baseWidth !== state.baseWidth) {
+
+          state.baseWidth =
+            baseWidth;
+
+          state.baseHeight =
+            baseWidth / IMAGE_RATIO;
+
+          state.shadowBaseW =
+            baseWidth;
+
+          state.shadowBaseH =
+            Math.round(baseWidth * 0.16);
+
+
+          terrariumImage.style.width =
+            `${baseWidth}px`;
+
+          terrariumShadow.style.width =
+            `${state.shadowBaseW}px`;
+
+          terrariumShadow.style.height =
+            `${state.shadowBaseH}px`;
+
+        }
+
+      }
+
+
+
+      /* =================================================
+         PROGRESSO ALVO A PARTIR DO SCROLL REAL
+      ================================================== */
+
+      function targetProgress() {
+
+        const range =
+          state.scrollEnd -
+          state.scrollStart;
+
+
+        if (range <= 0) {
+          return 1;
+        }
+
+
+        return clamp(
+          (window.scrollY - state.scrollStart) / range,
+          0,
+          1
+        );
+
+      }
+
+
+
+      /* =================================================
+         RENDER
+      ================================================== */
+
+      function render(progress) {
+
+        const viewportH =
+          window.innerHeight;
+
+        const scrollY =
+          window.scrollY;
+
+
+        const eased =
+          easeInOutCubic(progress);
+
+
+        /*
+          Arco: 0 → 1 → 0 ao longo da viagem.
+          Usado para o "voo" e a rotação.
+        */
+
+        const arc =
+          Math.sin(progress * Math.PI);
+
+
+        const motion =
+          reducedMotion.matches ? 0 : 1;
+
+
+
+        /* ---------- TAMANHO E POSIÇÃO ---------- */
+
+        const width =
+          lerp(
+            state.start.width,
+            state.end.width,
+            eased
+          );
+
+        const height =
+          width / IMAGE_RATIO;
+
+
+        const docX =
+          lerp(
+            state.start.cx,
+            state.end.cx,
+            eased
+          );
+
+        const docY =
+          lerp(
+            state.start.cy,
+            state.end.cy,
+            eased
+          );
+
+
+        /*
+          Leve subida no meio da viagem,
+          como se o terrário fosse carregado.
+        */
+
+        const lift =
+          -arc * viewportH * 0.05 * motion;
+
+
+        const bowlX =
+          docX;
+
+        const bowlY =
+          docY - scrollY + lift;
+
+
+
+        /* ---------- ROTAÇÃO ---------- */
+
+        const tilt =
+          -arc * MAX_TILT * motion;
+
+        const turn =
+          arc * MAX_TURN * motion;
+
+
+
+        /* ---------- TRANSFORM DA IMAGEM ---------- */
+
+        const scale =
+          width / state.baseWidth;
+
+
+        /*
+          O centro do vidro não coincide
+          exatamente com o centro da imagem.
+        */
+
+        const bowlOffsetX =
+          (BOWL_CX - 0.5) * width;
+
+        const bowlOffsetY =
+          (BOWL_CY - 0.5) * height;
+
+
+        const translateX =
+          bowlX -
+          bowlOffsetX -
+          state.baseWidth / 2;
+
+        const translateY =
+          bowlY -
+          bowlOffsetY -
+          state.baseHeight / 2;
+
+
+        terrariumImage.style.transform =
+          `translate3d(${translateX.toFixed(2)}px, ${translateY.toFixed(2)}px, 0) ` +
+          `perspective(1400px) ` +
+          `rotateY(${turn.toFixed(2)}deg) ` +
+          `rotate(${tilt.toFixed(2)}deg) ` +
+          `scale(${scale.toFixed(4)})`;
+
+
+
+        /* ---------- SOMBRA (SÓ NA MESA DA HERO) ---------- */
+
+        const shadowW =
+          width * BOWL_W * 0.92;
+
+        const shadowH =
+          shadowW * 0.16;
+
+
+        const shadowCX =
+          bowlX;
+
+        const shadowCY =
+          bowlY +
+          (height * BOWL_H) / 2 -
+          shadowH * 0.12;
+
+
+        const shadowScaleX =
+          shadowW / state.shadowBaseW;
+
+        const shadowScaleY =
+          shadowH / state.shadowBaseH;
+
+
+        terrariumShadow.style.transform =
+          `translate3d(${(shadowCX - state.shadowBaseW / 2).toFixed(2)}px, ` +
+          `${(shadowCY - state.shadowBaseH / 2).toFixed(2)}px, 0) ` +
+          `scale(${shadowScaleX.toFixed(4)}, ${shadowScaleY.toFixed(4)})`;
+
+
+        /*
+          A sombra some logo no início da
+          viagem: no ar, não há mesa.
+        */
+
+        const shadowFade =
+          1 - clamp(progress * 2.4, 0, 1);
+
+
+        terrariumShadow.style.opacity =
+          (
+            Math.pow(shadowFade, 2) * 0.9
+          ).toFixed(3);
+
+
+
+        /* ---------- FORA DA TELA ---------- */
+
+        const halfH =
+          height * 0.6;
+
+
+        const offscreen =
+          bowlY + halfH < -40 ||
+          bowlY - halfH > viewportH + 40;
+
+
+        terrariumFloat.classList.toggle(
+          "is-offscreen",
+          offscreen
+        );
+
+      }
+
+
+
+      /* =================================================
+         LOOP (requestAnimationFrame)
+      ================================================== */
+
+      function frame(time) {
+
+        state.rafId = null;
+
+
+        const target =
+          targetProgress();
+
+
+        /*
+          Suavização leve e independente
+          do frame rate: o terrário segue
+          o scroll real, mas sem trancos.
+        */
+
+        const delta =
+          state.lastTime
+            ? Math.min(time - state.lastTime, 64)
+            : 16.7;
+
+        state.lastTime = time;
+
+
+        const smoothing =
+          1 - Math.pow(0.82, delta / 16.7);
+
+
+        const difference =
+          target - state.progress;
+
+
+        if (
+          Math.abs(difference) < 0.0008 ||
+          reducedMotion.matches
+        ) {
+
+          state.progress = target;
+
+        } else {
+
+          state.progress +=
+            difference * smoothing;
+
+        }
+
+
+        render(state.progress);
+
+
+        if (state.progress !== target) {
+
+          state.rafId =
+            requestAnimationFrame(frame);
+
+        } else {
+
+          state.lastTime = 0;
+
+        }
+
+      }
+
+
+      function requestFrame() {
+
+        if (state.rafId === null) {
+
+          state.rafId =
+            requestAnimationFrame(frame);
+
+        }
+
+      }
+
+
+
+      /* =================================================
+         REMEDIR
+      ================================================== */
+
+      let measureTimer = null;
+
+
+      function remeasure() {
+
+        measure();
+
+        requestFrame();
+
+      }
+
+
+      function scheduleRemeasure() {
+
+        clearTimeout(measureTimer);
+
+        measureTimer =
+          setTimeout(
+            remeasure,
+            80
+          );
+
+      }
+
+
+
+      /* =================================================
+         INICIALIZAÇÃO
+      ================================================== */
+
+      function init() {
+
+        if (state.ready) {
+          return;
+        }
+
+        state.ready = true;
+
+
+        measure();
+
+
+        /*
+          Primeiro frame sem suavização
+          (ex.: página recarregada no meio).
+        */
+
+        state.progress =
+          targetProgress();
+
+        render(state.progress);
+
+
+        terrariumFloat.classList.add(
+          "is-ready"
+        );
+
+      }
+
+
+      if (terrariumImage.complete) {
+
+        init();
+
+      } else {
+
+        terrariumImage.addEventListener(
+          "load",
+          init
+        );
+
+        terrariumImage.addEventListener(
+          "error",
+          init
+        );
+
+      }
+
+
+
+      /* =================================================
+         EVENTOS
+      ================================================== */
+
+      window.addEventListener(
+        "scroll",
+        requestFrame,
+        {
+          passive: true
+        }
+      );
+
+
+      window.addEventListener(
+        "resize",
+        scheduleRemeasure
+      );
+
+
+      window.addEventListener(
+        "orientationchange",
+        scheduleRemeasure
+      );
+
+
+      window.addEventListener(
+        "load",
+        remeasure
+      );
+
+
+      if (document.fonts && document.fonts.ready) {
+
+        document.fonts.ready.then(
+          scheduleRemeasure
+        );
+
+      }
+
+
+      if (
+        typeof stageQuery.addEventListener === "function"
+      ) {
+
+        stageQuery.addEventListener(
+          "change",
+          scheduleRemeasure
+        );
+
+      }
+
+
+      /*
+        Qualquer mudança de layout da página
+        (imagens carregando, fontes, etc.)
+        reposiciona os pontos de referência.
+      */
+
+      if ("ResizeObserver" in window) {
+
+        const layoutObserver =
+          new ResizeObserver(
+            scheduleRemeasure
+          );
+
+        layoutObserver.observe(
+          document.body
+        );
+
+      }
+
+    }
+
   }
 );

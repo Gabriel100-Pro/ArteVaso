@@ -234,8 +234,8 @@ button {
   text-align: center;
 
   padding:
-    80px 20px
-    120px;
+    10px 20px
+    96px;
 }
 
 .brand-center {
@@ -244,6 +244,145 @@ button {
     1.2s ease
     0.15s
     both;
+}
+
+
+
+/* =====================================================
+   PALCO DO TERRÁRIO NA HERO
+   (área vazia que define a posição inicial
+   do terrário animado)
+===================================================== */
+
+.hero-stage {
+  flex: 1;
+
+  width: 100%;
+
+  min-height: 220px;
+
+  max-height: 640px;
+
+  margin: 0;
+
+  pointer-events: none;
+}
+
+.hero-actions {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  animation:
+    heroTitleEnter
+    1.2s ease
+    0.45s
+    both;
+}
+
+
+
+/* =====================================================
+   TERRÁRIO PRINCIPAL
+   (elemento fixo que acompanha o scroll)
+===================================================== */
+
+.terrarium-float {
+  position: fixed;
+
+  top: 0;
+  left: 0;
+
+  width: 0;
+  height: 0;
+
+  z-index: 30;
+
+  pointer-events: none;
+
+  opacity: 0;
+
+  transition:
+    opacity 0.8s ease;
+}
+
+.terrarium-float.is-ready {
+  opacity: 1;
+}
+
+.terrarium-float.is-offscreen {
+  visibility: hidden;
+}
+
+.terrarium-intro {
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 0;
+  height: 0;
+}
+
+.terrarium-float.is-ready
+.terrarium-intro {
+  animation:
+    terrariumEnter
+    1.4s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    0.2s
+    both;
+}
+
+.terrarium-float img {
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  display: block;
+
+  width: 760px;
+  height: auto;
+
+  max-width: none;
+
+  transform-origin: 50% 50%;
+
+  will-change: transform;
+
+  backface-visibility: hidden;
+
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.terrarium-shadow {
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 760px;
+  height: 120px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      ellipse at center,
+      rgba(8, 6, 3, 0.55) 0%,
+      rgba(8, 6, 3, 0.28) 38%,
+      rgba(8, 6, 3, 0) 70%
+    );
+
+  transform-origin: 50% 50%;
+
+  will-change:
+    transform,
+    opacity;
 }
 
 .brand-center h1 {
@@ -297,7 +436,7 @@ button {
 }
 
 .botanical-symbol {
-  margin-top: 40px;
+  margin-top: 0;
 
   display: flex;
 
@@ -306,6 +445,11 @@ button {
   gap: 20px;
 
   color: rgba(255,255,255,0.92);
+}
+
+.botanical-symbol svg {
+  width: 30px;
+  height: 42px;
 }
 
 .symbol-line {
@@ -317,7 +461,7 @@ button {
 }
 
 .hero-button {
-  margin-top: 36px;
+  margin-top: 18px;
 
   min-width: 300px;
 
@@ -690,7 +834,7 @@ button {
 
 
 /* =====================================================
-   NOVA SEÇÃO
+   EXPERIÊNCIA DO TERRÁRIO
    CONEXÃO VIVA
 ===================================================== */
 
@@ -704,18 +848,33 @@ button {
   overflow: hidden;
 
   background:
-    #f7f3ec;
+    #eadfd3;
 
   color:
     #20281f;
 
   isolation: isolate;
+
+  /*
+    Altura do "palco" no mobile/tablet:
+    área superior reservada para o
+    terrário pousar entre os vasos.
+  */
+
+  --universe-stage-h:
+    clamp(
+      440px,
+      72svh,
+      640px
+    );
 }
 
 
 
 /* =====================================================
-   FUNDO DOS TERRÁRIOS
+   FUNDO DOS QUATRO VASOS
+   (o terrário principal pousa no
+   espaço central desta composição)
 ===================================================== */
 
 .universe-background {
@@ -725,16 +884,72 @@ button {
 
   z-index: 0;
 
+  background-color:
+    #eadfd3;
+
   background-image:
-    url("assets/img\ fundo\ terrário.png");
+    url("assets/img\ fundo\ terrário..png");
 
   background-size: cover;
 
   background-position:
-    center center;
+    73% 45%;
 
   background-repeat:
     no-repeat;
+
+  pointer-events: none;
+}
+
+/*
+  Transição suave entre a imagem
+  e o restante da seção
+  (usada apenas no modo "palco").
+*/
+
+.universe-background::after {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  right: 0;
+
+  top:
+    calc(
+      var(--universe-bg-h, 0px) - 160px
+    );
+
+  height: 160px;
+
+  display: none;
+
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(234, 223, 211, 0),
+      rgba(234, 223, 211, 0.85) 60%,
+      #eadfd3
+    );
+}
+
+.universe-section.is-stage-mode
+.universe-background::after {
+  display: block;
+}
+
+.universe-stage {
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+
+  height:
+    var(--universe-stage-h);
+
+  z-index: 0;
 
   pointer-events: none;
 }
@@ -1683,6 +1898,24 @@ button {
 
 }
 
+@keyframes terrariumEnter {
+
+  from {
+    opacity: 0;
+
+    transform:
+      translate3d(0, 36px, 0);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translate3d(0, 0, 0);
+  }
+
+}
+
 @keyframes scrollAnimation {
 
   0% {
@@ -1758,9 +1991,18 @@ button {
       );
   }
 
+  /*
+    Tablet/mobile: o topo da seção vira
+    um palco para o terrário pousar
+    entre os vasos, e o texto desce.
+  */
+
   .universe-content-new {
+    min-height: auto;
+
     padding:
-      90px 0
+      calc(var(--universe-stage-h) + 24px)
+      0
       260px;
   }
 
@@ -1821,8 +2063,8 @@ button {
 
   .hero-content {
     padding:
-      80px 22px
-      110px;
+      0 22px
+      86px;
   }
 
   .brand-center h1 {
@@ -1834,12 +2076,45 @@ button {
       );
   }
 
+  .hero-stage {
+    min-height: 200px;
+
+    margin: 8px 0;
+  }
+
+  .botanical-symbol {
+    gap: 14px;
+  }
+
+  .botanical-symbol svg {
+    width: 30px;
+    height: 42px;
+  }
+
+  .symbol-line {
+    width: 36px;
+  }
+
   .hero-button {
     width: 100%;
 
     max-width: 300px;
 
     min-width: unset;
+
+    margin-top: 18px;
+
+    padding: 15px 22px;
+  }
+
+  .scroll-indicator {
+    bottom: 14px;
+
+    gap: 8px;
+  }
+
+  .scroll-line {
+    height: 30px;
   }
 
 
@@ -1890,26 +2165,25 @@ button {
   .universe-section {
     min-height:
       920px;
-  }
 
-  .universe-background {
-    background-size:
-      auto 100%;
-
-    background-position:
-      60% center;
+    --universe-stage-h:
+      clamp(
+        400px,
+        68svh,
+        560px
+      );
   }
 
   .universe-content-new {
     width:
       calc(100% - 40px);
 
-    min-height:
-      800px;
+    min-height: auto;
 
     padding:
-      65px 0
-      260px;
+      calc(var(--universe-stage-h) + 12px)
+      0
+      250px;
   }
 
   .universe-eyebrow-new {
@@ -2156,6 +2430,97 @@ button {
   .universe-info-card {
     width:
       285px;
+  }
+
+}
+
+
+
+/* =====================================================
+   DESKTOP — MAIS PRESENÇA DO TERRÁRIO NA HERO
+===================================================== */
+
+@media (min-width: 601px) {
+
+  .header {
+    padding: 20px 5vw;
+  }
+
+  .brand-divider {
+    margin-top: 14px;
+  }
+
+  .hero-content {
+    padding-top: 4px;
+
+    padding-bottom: 44px;
+  }
+
+  /*
+    Indicador de scroll vai para o canto
+    inferior esquerdo, liberando o centro
+    da hero para o terrário.
+  */
+
+  .scroll-indicator {
+    left: 5vw;
+
+    bottom: 26px;
+
+    transform: none;
+
+    align-items: flex-start;
+  }
+
+  .scroll-line {
+    margin-left: 2px;
+  }
+
+}
+
+
+
+/* =====================================================
+   TELAS BAIXAS (NOTEBOOKS / PAISAGEM)
+   garante espaço para o terrário na hero
+===================================================== */
+
+@media (max-height: 760px) and (min-width: 601px) {
+
+  .header {
+    padding: 20px 5vw;
+  }
+
+  .brand-center h1 {
+    font-size:
+      clamp(
+        3.4rem,
+        7vw,
+        6.2rem
+      );
+  }
+
+  .brand-divider {
+    margin-top: 12px;
+  }
+
+  .hero-content {
+    padding-bottom: 40px;
+  }
+
+  .hero-stage {
+    min-height: 180px;
+  }
+
+  .botanical-symbol svg {
+    width: 28px;
+    height: 38px;
+  }
+
+  .hero-button {
+    margin-top: 16px;
+
+    padding: 14px 24px;
   }
 
 }
