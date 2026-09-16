@@ -44,7 +44,7 @@ button {
   flex-direction: column;
 
   background-image:
-    url("assets/fundo - hero.png");
+    url("assets/fundo - hero (1).png");
 
   background-size: cover;
   background-position: center;
@@ -234,8 +234,8 @@ button {
   text-align: center;
 
   padding:
-    10px 20px
-    96px;
+    80px 20px
+    120px;
 }
 
 .brand-center {
@@ -246,35 +246,8 @@ button {
     both;
 }
 
-
-
-/* =====================================================
-   PALCO DO TERRÁRIO NA HERO
-   (área vazia que define a posição inicial
-   do terrário animado)
-===================================================== */
-
-.hero-stage {
-  flex: 1;
-
-  width: 100%;
-
-  min-height: 220px;
-
-  max-height: 640px;
-
-  margin: 0;
-
-  pointer-events: none;
-}
-
-.hero-actions {
-  display: flex;
-
-  flex-direction: column;
-
-  align-items: center;
-
+.hero-content .botanical-symbol,
+.hero-content .hero-button {
   animation:
     heroTitleEnter
     1.2s ease
@@ -286,7 +259,9 @@ button {
 
 /* =====================================================
    TERRÁRIO PRINCIPAL
-   (elemento fixo que acompanha o scroll)
+   (elemento fixo que acompanha o scroll:
+   nasce na seção de experiência e viaja
+   até o centro da seção de cuidados)
 ===================================================== */
 
 .terrarium-float {
@@ -324,16 +299,6 @@ button {
 
   width: 0;
   height: 0;
-}
-
-.terrarium-float.is-ready
-.terrarium-intro {
-  animation:
-    terrariumEnter
-    1.4s
-    cubic-bezier(0.22, 1, 0.36, 1)
-    0.2s
-    both;
 }
 
 .terrarium-float img {
@@ -436,7 +401,7 @@ button {
 }
 
 .botanical-symbol {
-  margin-top: 0;
+  margin-top: 40px;
 
   display: flex;
 
@@ -461,7 +426,7 @@ button {
 }
 
 .hero-button {
-  margin-top: 18px;
+  margin-top: 36px;
 
   min-width: 300px;
 
@@ -742,12 +707,45 @@ button {
   color: #77786e;
 }
 
-.product-info strong {
-  display: block;
+.product-link {
+  display: inline-flex;
 
-  font-size: 0.82rem;
+  align-items: center;
+
+  gap: 10px;
+
+  padding-bottom: 4px;
+
+  border-bottom:
+    1px solid
+    rgba(37,39,31,0.35);
+
+  font-size: 0.68rem;
 
   font-weight: 600;
+
+  letter-spacing: 0.16em;
+
+  color: #36382f;
+
+  transition:
+    color 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.product-link .arrow {
+  font-size: 0.95rem;
+}
+
+.product-link:hover {
+  color: #5c6440;
+
+  border-color: #5c6440;
+}
+
+.product-link:hover .arrow {
+  transform:
+    translateX(4px);
 }
 
 .carousel-arrow {
@@ -1372,63 +1370,69 @@ button {
 
 /* =====================================================
    CUIDADOS
+   (seção branca emoldurada por um gradiente
+   verde floresta)
 ===================================================== */
 
 .care-section {
   position: relative;
 
   width: 100%;
-  min-height: 100svh;
 
-  display: flex;
-
-  background: #f5f1e9;
-}
-
-.care-visual {
-  position: relative;
-
-  flex: 0 0 45%;
-
-  min-height: 460px;
-
-  background-image:
-    url("assets/img\ fundo\ uidados.png");
-
-  background-size: cover;
-  background-position: left center;
-  background-repeat: no-repeat;
-}
-
-.care-overlay {
-  position: absolute;
-  inset: 0;
+  padding:
+    clamp(20px, 3.5vw, 48px);
 
   background:
     linear-gradient(
-      to bottom,
-      rgba(15,17,12,0.5),
-      rgba(15,17,12,0.28) 45%,
-      rgba(15,17,12,0.62)
+      160deg,
+      #0b2416 0%,
+      #1b4d2e 45%,
+      #2f6b3f 100%
     );
 }
 
-.care-visual-content {
+.care-inner {
   position: relative;
-  z-index: 2;
 
-  height: 100%;
+  width: 100%;
+  max-width: 1400px;
+
+  min-height:
+    calc(100svh - clamp(40px, 7vw, 96px));
+
+  margin: 0 auto;
+
+  padding:
+    clamp(60px, 8vh, 96px)
+    clamp(20px, 4vw, 64px)
+    clamp(56px, 7vh, 80px);
 
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  align-items: center;
 
-  padding: 10vh 7vw;
+  border-radius: 28px;
 
-  color: #f6f3ea;
+  background: #ffffff;
+
+  color: #1d2a20;
+
+  box-shadow:
+    0 30px 80px
+    rgba(0, 0, 0, 0.25);
+
+  overflow: hidden;
+}
+
+.care-header {
+  text-align: center;
+
+  max-width: 640px;
 }
 
 .care-eyebrow {
+  display: block;
+
   font-family: "Cormorant Garamond", serif;
 
   font-size: clamp(2.6rem, 4.4vw, 3.6rem);
@@ -1436,6 +1440,8 @@ button {
   letter-spacing: 0.06em;
 
   line-height: 1;
+
+  color: #17241b;
 }
 
 .care-title {
@@ -1443,51 +1449,236 @@ button {
 
   font-family: "Inter", sans-serif;
 
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   font-weight: 500;
   letter-spacing: 0.32em;
 
-  color: rgba(246,243,234,0.78);
+  color: #4f6a55;
 }
 
 .care-lead {
-  max-width: 340px;
-  margin-top: 30px;
+  margin: 26px auto 0;
+
+  max-width: 460px;
 
   font-size: 0.98rem;
   line-height: 1.8;
 
-  color: rgba(246,243,234,0.86);
+  color: #5f6a62;
 }
 
-.care-panel {
+
+
+/* =====================================================
+   DIAGRAMA
+   (cards à esquerda, terrário no centro,
+   cards à direita, linhas curvas por trás)
+===================================================== */
+
+.care-diagram {
   position: relative;
 
-  flex: 1;
+  width: 100%;
+  max-width: 1240px;
+
+  /*
+    +40px compensa a margem negativa
+    das colunas de cards.
+  */
+
+  margin-top:
+    calc(clamp(48px, 6vh, 72px) + 40px);
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(220px, 1fr)
+    minmax(300px, 460px)
+    minmax(220px, 1fr);
+
+  align-items: stretch;
+
+  column-gap:
+    clamp(32px, 6vw, 110px);
+}
+
+.care-lines {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 1;
+
+  width: 100%;
+  height: 100%;
+
+  overflow: visible;
+
+  pointer-events: none;
+}
+
+.care-line {
+  fill: none;
+
+  stroke: #2f6b3f;
+  stroke-width: 1.4;
+  stroke-linecap: round;
+
+  stroke-dasharray:
+    var(--len, 1000);
+
+  stroke-dashoffset:
+    var(--len, 1000);
+
+  transition:
+    stroke-dashoffset
+    1.4s
+    cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.care-dot {
+  fill: #ffffff;
+
+  stroke: #2f6b3f;
+  stroke-width: 1.4;
+
+  opacity: 0;
+
+  transition:
+    opacity 0.5s ease 1.1s;
+}
+
+.care-diagram.is-drawn .care-line {
+  stroke-dashoffset: 0;
+}
+
+.care-diagram.is-drawn .care-dot {
+  opacity: 1;
+}
+
+.care-line:nth-of-type(2) { transition-delay: 0.12s; }
+.care-line:nth-of-type(3) { transition-delay: 0.24s; }
+.care-line:nth-of-type(4) { transition-delay: 0.36s; }
+
+.care-stage {
+  position: relative;
+
+  z-index: 0;
+
+  width: 100%;
+
+  aspect-ratio: 1 / 1;
+
+  max-width: 460px;
+
+  justify-self: center;
+
+  pointer-events: none;
+}
+
+.care-column {
+  position: relative;
+
+  z-index: 2;
 
   display: flex;
   flex-direction: column;
-  justify-content: center;
 
-  padding: 9vh 6vw;
+  justify-content: space-between;
+
+  gap: 32px;
+
+  /*
+    Os cards ultrapassam um pouco o palco
+    para as linhas ganharem mais curva.
+  */
+
+  margin: -40px 0;
 }
 
-.care-grid {
-  display: grid;
+.care-column-left {
+  align-items: flex-end;
 
-  grid-template-columns: 1fr 1fr;
-
-  column-gap: 48px;
-  row-gap: 46px;
+  text-align: right;
 }
 
-.care-item {
-  transition: transform 0.4s ease;
+.care-column-left .care-card {
+  align-items: flex-end;
 }
 
-.care-item:hover {
-  transform: translateY(-3px);
+.care-column-right {
+  align-items: flex-start;
+
+  text-align: left;
 }
+
+
+
+/* =====================================================
+   CARDS DE CUIDADO
+   (fundo transparente)
+===================================================== */
+
+.care-card {
+  width: 100%;
+  max-width: 340px;
+
+  padding: 26px 28px;
+
+  display: flex;
+  flex-direction: column;
+
+  border:
+    1px solid
+    rgba(31, 77, 46, 0.22);
+
+  border-radius: 20px;
+
+  background: transparent;
+
+  opacity: 0;
+
+  transform:
+    translateY(14px);
+
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s ease,
+    border-color 0.4s ease,
+    box-shadow 0.4s ease;
+}
+
+.care-card:hover {
+  border-color:
+    rgba(31, 77, 46, 0.5);
+
+  box-shadow:
+    0 14px 40px
+    rgba(31, 77, 46, 0.08);
+}
+
+.care-diagram.is-drawn .care-card {
+  opacity: 1;
+
+  transform:
+    translateY(0);
+}
+
+.care-diagram.is-drawn
+.care-column-left
+.care-card:nth-child(1) { transition-delay: 0.55s; }
+
+.care-diagram.is-drawn
+.care-column-left
+.care-card:nth-child(2) { transition-delay: 0.67s; }
+
+.care-diagram.is-drawn
+.care-column-right
+.care-card:nth-child(1) { transition-delay: 0.79s; }
+
+.care-diagram.is-drawn
+.care-column-right
+.care-card:nth-child(2) { transition-delay: 0.91s; }
 
 .care-icon {
   display: inline-flex;
@@ -1495,7 +1686,7 @@ button {
   width: 30px;
   height: 30px;
 
-  color: #5f6a45;
+  color: #2f6b3f;
 }
 
 .care-icon svg {
@@ -1503,25 +1694,23 @@ button {
   height: 100%;
 }
 
-.care-item h3 {
+.care-card h3 {
   margin-top: 16px;
 
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 600;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.22em;
 
-  color: #262a1e;
+  color: #17241b;
 }
 
-.care-item p {
+.care-card p {
   margin-top: 12px;
 
-  max-width: 320px;
-
-  font-size: 0.88rem;
+  font-size: 0.86rem;
   line-height: 1.7;
 
-  color: #6b6b5c;
+  color: #5f6a62;
 }
 
 .care-note {
@@ -1530,12 +1719,18 @@ button {
 
   gap: 16px;
 
-  margin-top: 60px;
-  padding: 24px 28px;
+  margin-top:
+    calc(clamp(48px, 6vh, 72px) + 40px);
 
-  border: 1px solid rgba(38,42,30,0.18);
+  padding: 22px 28px;
 
-  max-width: 640px;
+  border:
+    1px solid
+    rgba(31, 77, 46, 0.18);
+
+  border-radius: 999px;
+
+  max-width: 680px;
 }
 
 .care-note-icon {
@@ -1544,7 +1739,7 @@ button {
   width: 22px;
   height: 22px;
 
-  color: #5f6a45;
+  color: #2f6b3f;
 }
 
 .care-note-icon svg {
@@ -1558,7 +1753,7 @@ button {
 
   font-style: italic;
 
-  color: #4b4d3f;
+  color: #4b5a4f;
 }
 
 
@@ -1670,11 +1865,21 @@ button {
   gap: 22px;
 }
 
-.contact-list li {
+.contact-item {
   display: flex;
   align-items: center;
 
   gap: 16px;
+
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+}
+
+a.contact-item:hover {
+  opacity: 0.8;
+
+  transform: translateX(4px);
 }
 
 .contact-icon {
@@ -1829,29 +2034,6 @@ button {
   transform: translateY(0);
 }
 
-.care-grid .care-item {
-  opacity: 0;
-  transform: translateY(18px);
-
-  transition:
-    opacity 0.7s ease,
-    transform 0.7s ease;
-}
-
-.care-grid.is-visible .care-item {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.care-grid.is-visible .care-item:nth-child(1) { transition-delay: 0.05s; }
-.care-grid.is-visible .care-item:nth-child(2) { transition-delay: 0.15s; }
-.care-grid.is-visible .care-item:nth-child(3) { transition-delay: 0.25s; }
-.care-grid.is-visible .care-item:nth-child(4) { transition-delay: 0.35s; }
-.care-grid.is-visible .care-item:nth-child(5) { transition-delay: 0.45s; }
-.care-grid.is-visible .care-item:nth-child(6) { transition-delay: 0.55s; }
-
-
-
 /* =====================================================
    ANIMAÇÕES
 ===================================================== */
@@ -1894,24 +2076,6 @@ button {
 
     filter:
       blur(0);
-  }
-
-}
-
-@keyframes terrariumEnter {
-
-  from {
-    opacity: 0;
-
-    transform:
-      translate3d(0, 36px, 0);
-  }
-
-  to {
-    opacity: 1;
-
-    transform:
-      translate3d(0, 0, 0);
   }
 
 }
@@ -2037,7 +2201,7 @@ button {
     min-height: 100svh;
 
     background-position:
-      55% center;
+      center;
   }
 
   .header {
@@ -2063,8 +2227,8 @@ button {
 
   .hero-content {
     padding:
-      0 22px
-      86px;
+      80px 22px
+      110px;
   }
 
   .brand-center h1 {
@@ -2074,12 +2238,6 @@ button {
         18vw,
         6rem
       );
-  }
-
-  .hero-stage {
-    min-height: 200px;
-
-    margin: 8px 0;
   }
 
   .botanical-symbol {
@@ -2101,10 +2259,6 @@ button {
     max-width: 300px;
 
     min-width: unset;
-
-    margin-top: 18px;
-
-    padding: 15px 22px;
   }
 
   .scroll-indicator {
@@ -2308,26 +2462,72 @@ button {
 
 /* =====================================================
    CUIDADOS / CONTATO — TABLET
+   (terrário no topo, cards em duas colunas,
+   linhas escondidas)
 ===================================================== */
 
 @media (max-width: 900px) {
 
-  .care-section {
-    flex-direction: column;
+  .care-inner {
+    min-height: auto;
+
+    border-radius: 22px;
   }
 
-  .care-visual {
-    flex: none;
+  .care-diagram {
+    grid-template-columns: 1fr 1fr;
 
-    min-height: 60vh;
+    margin-top: 48px;
+
+    column-gap: 20px;
+    row-gap: 20px;
+
+    align-items: start;
   }
 
-  .care-panel {
-    padding: 70px 6vw;
+  .care-stage {
+    grid-column: 1 / -1;
+
+    order: -1;
+
+    max-width: 360px;
+
+    margin-bottom: 12px;
+  }
+
+  .care-lines {
+    display: none;
+  }
+
+  .care-column {
+    justify-content: flex-start;
+
+    gap: 20px;
+
+    margin: 0;
+  }
+
+  .care-column-left,
+  .care-column-right {
+    align-items: stretch;
+
+    text-align: left;
+  }
+
+  .care-column-left .care-card {
+    align-items: flex-start;
+  }
+
+  .care-card {
+    max-width: none;
   }
 
   .care-note {
     max-width: none;
+
+    margin-top: 48px;
+
+    border-radius: 24px;
   }
 
   .contact-wrapper {
@@ -2347,30 +2547,32 @@ button {
 @media (max-width: 600px) {
 
   .care-section {
-    min-height: auto;
+    padding: 14px;
   }
 
-  .care-visual {
-    min-height: 52vh;
+  .care-inner {
+    padding: 64px 20px 56px;
+
+    border-radius: 18px;
   }
 
-  .care-visual-content {
-    padding: 8vh 7vw;
+  .care-diagram {
+    grid-template-columns: 1fr;
+
+    margin-top: 36px;
   }
 
-  .care-panel {
-    padding: 56px 7vw 70px;
+  .care-stage {
+    max-width: 300px;
   }
 
-  .care-grid {
-    grid-template-columns: 1fr 1fr;
-
-    column-gap: 28px;
-    row-gap: 36px;
+  .care-card {
+    padding: 22px 22px;
   }
 
   .care-note {
-    margin-top: 44px;
+    margin-top: 40px;
+
     padding: 20px 22px;
   }
 
@@ -2385,20 +2587,6 @@ button {
   }
 
   .form-row {
-    grid-template-columns: 1fr;
-  }
-
-}
-
-
-
-/* =====================================================
-   CUIDADOS — CELULARES PEQUENOS
-===================================================== */
-
-@media (max-width: 460px) {
-
-  .care-grid {
     grid-template-columns: 1fr;
   }
 
@@ -2430,97 +2618,6 @@ button {
   .universe-info-card {
     width:
       285px;
-  }
-
-}
-
-
-
-/* =====================================================
-   DESKTOP — MAIS PRESENÇA DO TERRÁRIO NA HERO
-===================================================== */
-
-@media (min-width: 601px) {
-
-  .header {
-    padding: 20px 5vw;
-  }
-
-  .brand-divider {
-    margin-top: 14px;
-  }
-
-  .hero-content {
-    padding-top: 4px;
-
-    padding-bottom: 44px;
-  }
-
-  /*
-    Indicador de scroll vai para o canto
-    inferior esquerdo, liberando o centro
-    da hero para o terrário.
-  */
-
-  .scroll-indicator {
-    left: 5vw;
-
-    bottom: 26px;
-
-    transform: none;
-
-    align-items: flex-start;
-  }
-
-  .scroll-line {
-    margin-left: 2px;
-  }
-
-}
-
-
-
-/* =====================================================
-   TELAS BAIXAS (NOTEBOOKS / PAISAGEM)
-   garante espaço para o terrário na hero
-===================================================== */
-
-@media (max-height: 760px) and (min-width: 601px) {
-
-  .header {
-    padding: 20px 5vw;
-  }
-
-  .brand-center h1 {
-    font-size:
-      clamp(
-        3.4rem,
-        7vw,
-        6.2rem
-      );
-  }
-
-  .brand-divider {
-    margin-top: 12px;
-  }
-
-  .hero-content {
-    padding-bottom: 40px;
-  }
-
-  .hero-stage {
-    min-height: 180px;
-  }
-
-  .botanical-symbol svg {
-    width: 28px;
-    height: 38px;
-  }
-
-  .hero-button {
-    margin-top: 16px;
-
-    padding: 14px 24px;
   }
 
 }

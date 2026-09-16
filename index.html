@@ -36,7 +36,9 @@
 
   <!-- =====================================================
        TERRÁRIO PRINCIPAL
-       (elemento fixo animado pelo scroll)
+       (elemento fixo animado pelo scroll:
+       nasce na seção de experiência e viaja
+       até o centro da seção de cuidados)
   ====================================================== -->
 
   <div
@@ -119,9 +121,11 @@
         <!-- INSTAGRAM -->
 
         <a
-          href="#"
+          href="https://www.instagram.com/arteevasojundiai?utm_source=ig_web_button_share_sheet&stkn=ZDNlZDc0MzIxNw=="
           class="icon-link"
           aria-label="Instagram"
+          target="_blank"
+          rel="noopener"
         >
 
           <svg
@@ -218,77 +222,63 @@
       </div>
 
 
-      <!-- PALCO DO TERRÁRIO
-           (posição inicial da imagem animada) -->
+      <div class="botanical-symbol">
 
-      <div
-        class="hero-stage"
-        id="heroStage"
-        aria-hidden="true"
-      ></div>
+        <span class="symbol-line"></span>
 
-
-      <div class="hero-actions">
-
-        <div class="botanical-symbol">
-
-          <span class="symbol-line"></span>
-
-          <svg
-            width="38"
-            height="52"
-            viewBox="0 0 38 52"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-
-            <path
-              d="M19 48C19 32 20 18 32 6"
-              stroke="currentColor"
-              stroke-width="1.2"
-            />
-
-            <path
-              d="M20 33C13 29 8 24 7 19"
-              stroke="currentColor"
-              stroke-width="1.2"
-            />
-
-            <path
-              d="M20 27C27 24 31 19 32 14"
-              stroke="currentColor"
-              stroke-width="1.2"
-            />
-
-            <path
-              d="M19 40C12 38 8 34 6 29"
-              stroke="currentColor"
-              stroke-width="1.2"
-            />
-
-          </svg>
-
-          <span class="symbol-line"></span>
-
-        </div>
-
-
-        <a
-          href="#terrarios"
-          class="hero-button"
+        <svg
+          width="38"
+          height="52"
+          viewBox="0 0 38 52"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
         >
 
-          <span>
-            CONHEÇA OS TERRÁRIOS
-          </span>
+          <path
+            d="M19 48C19 32 20 18 32 6"
+            stroke="currentColor"
+            stroke-width="1.2"
+          />
 
-          <span class="arrow">
-            →
-          </span>
+          <path
+            d="M20 33C13 29 8 24 7 19"
+            stroke="currentColor"
+            stroke-width="1.2"
+          />
 
-        </a>
+          <path
+            d="M20 27C27 24 31 19 32 14"
+            stroke="currentColor"
+            stroke-width="1.2"
+          />
+
+          <path
+            d="M19 40C12 38 8 34 6 29"
+            stroke="currentColor"
+            stroke-width="1.2"
+          />
+
+        </svg>
+
+        <span class="symbol-line"></span>
 
       </div>
+
+
+      <a
+        href="#terrarios"
+        class="hero-button"
+      >
+
+        <span>
+          CONHEÇA OS TERRÁRIOS
+        </span>
+
+        <span class="arrow">
+          →
+        </span>
+
+      </a>
 
     </section>
 
@@ -313,8 +303,294 @@
 
 
   <!-- =====================================================
+       PRODUTOS
+  ====================================================== -->
+
+  <section
+    class="products-section"
+    id="terrarios"
+  >
+
+    <div class="products-header">
+
+      <span class="products-eyebrow">
+        ENCONTRE O SEU
+      </span>
+
+      <h2>
+        PEQUENO MUNDO
+      </h2>
+
+    </div>
+
+
+    <div class="products-carousel">
+
+      <button
+        class="carousel-arrow carousel-prev"
+        aria-label="Produto anterior"
+        type="button"
+      >
+        ←
+      </button>
+
+
+      <div class="products-track-wrapper">
+
+        <div class="products-track">
+
+          <!-- FLORESTA -->
+
+          <article class="product-card">
+
+            <div class="product-image">
+
+              <img
+                src="assets/terrário floresta.jpg"
+                alt="Terrário Floresta"
+                draggable="false"
+              >
+
+            </div>
+
+            <div class="product-info">
+
+              <h3>
+                FLORESTA
+              </h3>
+
+              <span>
+                Polyscias
+              </span>
+
+              <a
+                class="product-link"
+                href="https://wa.me/5511976052590?text=Ol%C3%A1!%20Tenho%20interesse%20no%20terr%C3%A1rio%20Floresta."
+                target="_blank"
+                rel="noopener"
+                draggable="false"
+              >
+                SAIBA MAIS
+                <span class="arrow">→</span>
+              </a>
+
+            </div>
+
+          </article>
+
+
+          <!-- DESERTO -->
+
+          <article class="product-card">
+
+            <div class="product-image">
+
+              <img
+                src="assets/terrário deserto.jpg"
+                alt="Terrário Deserto"
+                draggable="false"
+              >
+
+            </div>
+
+            <div class="product-info">
+
+              <h3>
+                DESERTO
+              </h3>
+
+              <span>
+                Suculento
+              </span>
+
+              <a
+                class="product-link"
+                href="https://wa.me/5511976052590?text=Ol%C3%A1!%20Tenho%20interesse%20no%20terr%C3%A1rio%20Deserto."
+                target="_blank"
+                rel="noopener"
+                draggable="false"
+              >
+                SAIBA MAIS
+                <span class="arrow">→</span>
+              </a>
+
+            </div>
+
+          </article>
+
+
+          <!-- TROPICAL -->
+
+          <article class="product-card">
+
+            <div class="product-image">
+
+              <img
+                src="assets/terrário tropical.jpg"
+                alt="Terrário Tropical"
+                draggable="false"
+              >
+
+            </div>
+
+            <div class="product-info">
+
+              <h3>
+                TROPICAL
+              </h3>
+
+              <span>
+                Fittonia
+              </span>
+
+              <a
+                class="product-link"
+                href="https://wa.me/5511976052590?text=Ol%C3%A1!%20Tenho%20interesse%20no%20terr%C3%A1rio%20Tropical."
+                target="_blank"
+                rel="noopener"
+                draggable="false"
+              >
+                SAIBA MAIS
+                <span class="arrow">→</span>
+              </a>
+
+            </div>
+
+          </article>
+
+
+          <!-- MINIMALISTA -->
+
+          <article class="product-card">
+
+            <div class="product-image">
+
+              <img
+                src="assets/Terrário minimalista.jpg"
+                alt="Terrário Minimalista"
+                draggable="false"
+              >
+
+            </div>
+
+            <div class="product-info">
+
+              <h3>
+                MINIMALISTA
+              </h3>
+
+              <span>
+                Miniatura
+              </span>
+
+              <a
+                class="product-link"
+                href="https://wa.me/5511976052590?text=Ol%C3%A1!%20Tenho%20interesse%20no%20terr%C3%A1rio%20Minimalista."
+                target="_blank"
+                rel="noopener"
+                draggable="false"
+              >
+                SAIBA MAIS
+                <span class="arrow">→</span>
+              </a>
+
+            </div>
+
+          </article>
+
+
+          <!-- MATA ATLÂNTICA -->
+
+          <article class="product-card">
+
+            <div class="product-image">
+
+              <img
+                src="assets/mata atlântica.jpg"
+                alt="Terrário Mata Atlântica"
+                draggable="false"
+              >
+
+            </div>
+
+            <div class="product-info">
+
+              <h3>
+                MATA ATLÂNTICA
+              </h3>
+
+              <span>
+                Mini terrário
+              </span>
+
+              <a
+                class="product-link"
+                href="https://wa.me/5511976052590?text=Ol%C3%A1!%20Tenho%20interesse%20no%20terr%C3%A1rio%20Mata%20Atl%C3%A2ntica."
+                target="_blank"
+                rel="noopener"
+                draggable="false"
+              >
+                SAIBA MAIS
+                <span class="arrow">→</span>
+              </a>
+
+            </div>
+
+          </article>
+
+        </div>
+
+      </div>
+
+
+      <button
+        class="carousel-arrow carousel-next"
+        aria-label="Próximo produto"
+        type="button"
+      >
+        →
+      </button>
+
+    </div>
+
+
+    <div class="carousel-dots">
+
+      <button
+        class="carousel-dot active"
+        data-slide="0"
+        type="button"
+      ></button>
+
+      <button
+        class="carousel-dot"
+        data-slide="1"
+        type="button"
+      ></button>
+
+      <button
+        class="carousel-dot"
+        data-slide="2"
+        type="button"
+      ></button>
+
+      <button
+        class="carousel-dot"
+        data-slide="3"
+        type="button"
+      ></button>
+
+    </div>
+
+  </section>
+
+
+
+  <!-- =====================================================
        EXPERIÊNCIA DO TERRÁRIO
        CONEXÃO VIVA
+       (o terrário transparente nasce aqui,
+       entre os quatro vasos do fundo)
   ====================================================== -->
 
   <section
@@ -327,7 +603,7 @@
     <div class="universe-background"></div>
 
 
-    <!-- PALCO DE POUSO DO TERRÁRIO
+    <!-- PALCO DO TERRÁRIO
          (área superior usada no mobile/tablet) -->
 
     <div
@@ -656,256 +932,11 @@
 
 
   <!-- =====================================================
-       PRODUTOS
-  ====================================================== -->
-
-  <section
-    class="products-section"
-    id="terrarios"
-  >
-
-    <div class="products-header">
-
-      <span class="products-eyebrow">
-        ENCONTRE O SEU
-      </span>
-
-      <h2>
-        PEQUENO MUNDO
-      </h2>
-
-    </div>
-
-
-    <div class="products-carousel">
-
-      <button
-        class="carousel-arrow carousel-prev"
-        aria-label="Produto anterior"
-        type="button"
-      >
-        ←
-      </button>
-
-
-      <div class="products-track-wrapper">
-
-        <div class="products-track">
-
-          <!-- FLORESTA -->
-
-          <article class="product-card">
-
-            <div class="product-image">
-
-              <img
-                src="assets/terrário floresta.jpg"
-                alt="Terrário Floresta"
-                draggable="false"
-              >
-
-            </div>
-
-            <div class="product-info">
-
-              <h3>
-                FLORESTA
-              </h3>
-
-              <span>
-                Polyscias
-              </span>
-
-              <strong>
-                R$ 105,00
-              </strong>
-
-            </div>
-
-          </article>
-
-
-          <!-- DESERTO -->
-
-          <article class="product-card">
-
-            <div class="product-image">
-
-              <img
-                src="assets/terrário deserto.jpg"
-                alt="Terrário Deserto"
-                draggable="false"
-              >
-
-            </div>
-
-            <div class="product-info">
-
-              <h3>
-                DESERTO
-              </h3>
-
-              <span>
-                Suculento
-              </span>
-
-              <strong>
-                R$ 79,00
-              </strong>
-
-            </div>
-
-          </article>
-
-
-          <!-- TROPICAL -->
-
-          <article class="product-card">
-
-            <div class="product-image">
-
-              <img
-                src="assets/terrário tropical.jpg"
-                alt="Terrário Tropical"
-                draggable="false"
-              >
-
-            </div>
-
-            <div class="product-info">
-
-              <h3>
-                TROPICAL
-              </h3>
-
-              <span>
-                Fittonia
-              </span>
-
-              <strong>
-                R$ 149,00
-              </strong>
-
-            </div>
-
-          </article>
-
-
-          <!-- MINIMALISTA -->
-
-          <article class="product-card">
-
-            <div class="product-image">
-
-              <img
-                src="assets/Terrário minimalista.jpg"
-                alt="Terrário Minimalista"
-                draggable="false"
-              >
-
-            </div>
-
-            <div class="product-info">
-
-              <h3>
-                MINIMALISTA
-              </h3>
-
-              <span>
-                Miniatura
-              </span>
-
-              <strong>
-                R$ 105,00
-              </strong>
-
-            </div>
-
-          </article>
-
-
-          <!-- MATA ATLÂNTICA -->
-
-          <article class="product-card">
-
-            <div class="product-image">
-
-              <img
-                src="assets/mata atlântica.jpg"
-                alt="Terrário Mata Atlântica"
-                draggable="false"
-              >
-
-            </div>
-
-            <div class="product-info">
-
-              <h3>
-                MATA ATLÂNTICA
-              </h3>
-
-              <span>
-                Mini terrário
-              </span>
-
-              <strong>
-                R$ 229,00
-              </strong>
-
-            </div>
-
-          </article>
-
-        </div>
-
-      </div>
-
-
-      <button
-        class="carousel-arrow carousel-next"
-        aria-label="Próximo produto"
-        type="button"
-      >
-        →
-      </button>
-
-    </div>
-
-
-    <div class="carousel-dots">
-
-      <button
-        class="carousel-dot active"
-        data-slide="0"
-        type="button"
-      ></button>
-
-      <button
-        class="carousel-dot"
-        data-slide="1"
-        type="button"
-      ></button>
-
-      <button
-        class="carousel-dot"
-        data-slide="2"
-        type="button"
-      ></button>
-
-      <button
-        class="carousel-dot"
-        data-slide="3"
-        type="button"
-      ></button>
-
-    </div>
-
-  </section>
-
-
-
-  <!-- =====================================================
        CUIDADOS
+       (seção branca emoldurada por um gradiente
+       verde floresta; o terrário pousa no centro
+       e linhas curvas saem de trás dele até
+       os cards de cuidado)
   ====================================================== -->
 
   <section
@@ -913,180 +944,157 @@
     id="cuidados"
   >
 
-    <!-- LADO ESQUERDO — IMAGEM -->
+    <div class="care-inner">
 
-    <div class="care-visual" data-reveal>
+      <!-- CABEÇALHO -->
 
-      <div class="care-overlay"></div>
-
-      <div class="care-visual-content">
+      <div class="care-header" data-reveal>
 
         <span class="care-eyebrow">
           CUIDADOS
         </span>
 
         <h2 class="care-title">
-          COM SEU
-          <br>
-          TERRÁRIO
+          COM SEU TERRÁRIO
         </h2>
 
         <p class="care-lead">
           Pequenos cuidados garantem que
-          <br>
           seu terrário se mantenha saudável
-          <br>
           e harmonioso por muito mais tempo.
         </p>
 
       </div>
 
-    </div>
+
+      <!-- DIAGRAMA: CARDS + TERRÁRIO + LINHAS -->
+
+      <div
+        class="care-diagram"
+        id="careDiagram"
+      >
+
+        <!-- LINHAS CURVAS (desenhadas via JS) -->
+
+        <svg
+          class="care-lines"
+          id="careLines"
+          aria-hidden="true"
+        ></svg>
 
 
-    <!-- LADO DIREITO — GRID DE CUIDADOS -->
+        <!-- COLUNA ESQUERDA -->
 
-    <div class="care-panel">
+        <div class="care-column care-column-left">
 
-      <div class="care-grid" data-reveal>
+          <!-- LUZ -->
 
-        <!-- REGA -->
+          <article class="care-card">
 
-        <article class="care-item">
+            <span class="care-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
+                <circle cx="12" cy="12" r="4.2" />
+                <path d="M12 2.5v2.6M12 18.9v2.6M4.4 4.4l1.9 1.9M17.7 17.7l1.9 1.9M2.5 12h2.6M18.9 12h2.6M4.4 19.6l1.9-1.9M17.7 6.3l1.9-1.9" />
+              </svg>
+            </span>
 
-          <span class="care-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
-              <path d="M12 3c3.4 4.2 6 7.8 6 11a6 6 0 0 1-12 0c0-3.2 2.6-6.8 6-11Z" />
-            </svg>
-          </span>
+            <h3>LUZ</h3>
 
-          <h3>REGA</h3>
+            <p>
+              Mantenha seu terrário em locais
+              com luz indireta. Evite o sol
+              direto, que pode superaquecer
+              e danificar as plantas.
+            </p>
 
-          <p>
-            Regue levemente apenas quando o
-            substrato estiver seco ao toque.
-            Excesso de água pode prejudicar
-            suas plantas.
-          </p>
-
-        </article>
-
-
-        <!-- LUZ -->
-
-        <article class="care-item">
-
-          <span class="care-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
-              <circle cx="12" cy="12" r="4.2" />
-              <path d="M12 2.5v2.6M12 18.9v2.6M4.4 4.4l1.9 1.9M17.7 17.7l1.9 1.9M2.5 12h2.6M18.9 12h2.6M4.4 19.6l1.9-1.9M17.7 6.3l1.9-1.9" />
-            </svg>
-          </span>
-
-          <h3>LUZ</h3>
-
-          <p>
-            Mantenha seu terrário em locais
-            com luz indireta. Evite exposição
-            direta ao sol, que pode superaquecer
-            e danificar as plantas.
-          </p>
-
-        </article>
+          </article>
 
 
-        <!-- PODA -->
+          <!-- REGA -->
 
-        <article class="care-item">
+          <article class="care-card">
 
-          <span class="care-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
-              <circle cx="6.3" cy="6.3" r="2.3" />
-              <circle cx="6.3" cy="17.7" r="2.3" />
-              <path d="M8 7.6 19 18M8 16.4 19 5.4M12 12l2.5 2.5" />
-            </svg>
-          </span>
+            <span class="care-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
+                <path d="M12 3c3.4 4.2 6 7.8 6 11a6 6 0 0 1-12 0c0-3.2 2.6-6.8 6-11Z" />
+              </svg>
+            </span>
 
-          <h3>PODA</h3>
+            <h3>REGA</h3>
 
-          <p>
-            Remova folhas secas e galhos
-            indesejados para estimular o
-            crescimento saudável e manter
-            a estética do terrário.
-          </p>
+            <p>
+              Regue levemente apenas quando o
+              substrato estiver seco ao toque.
+              Excesso de água pode prejudicar
+              suas plantas.
+            </p>
 
-        </article>
+          </article>
 
-
-        <!-- VENTILAÇÃO -->
-
-        <article class="care-item">
-
-          <span class="care-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
-              <path d="M3 8h10a3 3 0 1 0-3-3" />
-              <path d="M3 13h14a3 3 0 1 1-3 3" />
-              <path d="M3 18h8a2.4 2.4 0 1 0-2.4-2.4" />
-            </svg>
-          </span>
-
-          <h3>VENTILAÇÃO</h3>
-
-          <p>
-            Terrários fechados precisam de
-            equilíbrio. Abra ocasionalmente
-            se notar excesso de umidade ou
-            condensação.
-          </p>
-
-        </article>
+        </div>
 
 
-        <!-- ADUBAÇÃO -->
+        <!-- PALCO DE POUSO DO TERRÁRIO -->
 
-        <article class="care-item">
-
-          <span class="care-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
-              <path d="M7 9V6.5a5 5 0 0 1 10 0V9" />
-              <path d="M5.5 9h13l-1 11h-11L5.5 9Z" />
-            </svg>
-          </span>
-
-          <h3>ADUBAÇÃO</h3>
-
-          <p>
-            Adube a cada 2–3 meses com
-            adubo orgânico em pequena
-            quantidade para nutrir
-            suas plantas.
-          </p>
-
-        </article>
+        <div
+          class="care-stage"
+          id="careStage"
+          aria-hidden="true"
+        ></div>
 
 
-        <!-- OBSERVAÇÃO -->
+        <!-- COLUNA DIREITA -->
 
-        <article class="care-item">
+        <div class="care-column care-column-right">
 
-          <span class="care-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
-              <circle cx="10.5" cy="10.5" r="6.5" />
-              <path d="M20.5 20.5 15.3 15.3" />
-            </svg>
-          </span>
+          <!-- VENTILAÇÃO -->
 
-          <h3>OBSERVAÇÃO</h3>
+          <article class="care-card">
 
-          <p>
-            Observe suas plantas
-            regularmente. Cada terrário
-            é único e suas plantas
-            se comunicam com você.
-          </p>
+            <span class="care-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
+                <path d="M3 8h10a3 3 0 1 0-3-3" />
+                <path d="M3 13h14a3 3 0 1 1-3 3" />
+                <path d="M3 18h8a2.4 2.4 0 1 0-2.4-2.4" />
+              </svg>
+            </span>
 
-        </article>
+            <h3>VENTILAÇÃO</h3>
+
+            <p>
+              Terrários fechados precisam de
+              equilíbrio. Abra ocasionalmente
+              se notar excesso de umidade ou
+              condensação.
+            </p>
+
+          </article>
+
+
+          <!-- PODA -->
+
+          <article class="care-card">
+
+            <span class="care-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
+                <circle cx="6.3" cy="6.3" r="2.3" />
+                <circle cx="6.3" cy="17.7" r="2.3" />
+                <path d="M8 7.6 19 18M8 16.4 19 5.4M12 12l2.5 2.5" />
+              </svg>
+            </span>
+
+            <h3>PODA</h3>
+
+            <p>
+              Remova folhas secas e galhos
+              indesejados para estimular o
+              crescimento saudável e manter
+              a estética do terrário.
+            </p>
+
+          </article>
+
+        </div>
 
       </div>
 
@@ -1152,16 +1160,46 @@
 
           <li>
 
-            <span class="contact-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
-                <path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.7-1.2A9 9 0 1 0 12 3Z" />
-                <path d="M8.5 8.6c.3-.7 1-1 1.6-.8.3.1.5.5.8 1.1.2.5.1.8-.1 1.1-.3.4-.6.4-.4.9.3.9 1.5 2 2.4 2.3.5.2.5-.1.9-.4.3-.2.6-.3 1.1-.1.6.3 1 .5 1.1.8.2.6-.1 1.3-.8 1.6-1.2.5-2.9-.1-4.6-1.8-1.7-1.7-2.3-3.4-1.8-4.6Z" />
-              </svg>
-            </span>
+            <a
+              class="contact-item"
+              href="https://wa.me/5511976052590"
+              target="_blank"
+              rel="noopener"
+            >
 
-            <div>
-              <strong>WhatsApp</strong>
-              <p>(11) 99999-9999</p>
+              <span class="contact-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
+                  <path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.7-1.2A9 9 0 1 0 12 3Z" />
+                  <path d="M8.5 8.6c.3-.7 1-1 1.6-.8.3.1.5.5.8 1.1.2.5.1.8-.1 1.1-.3.4-.6.4-.4.9.3.9 1.5 2 2.4 2.3.5.2.5-.1.9-.4.3-.2.6-.3 1.1-.1.6.3 1 .5 1.1.8.2.6-.1 1.3-.8 1.6-1.2.5-2.9-.1-4.6-1.8-1.7-1.7-2.3-3.4-1.8-4.6Z" />
+                </svg>
+              </span>
+
+              <div>
+                <strong>WhatsApp</strong>
+                <p>(11) 97605-2590</p>
+              </div>
+
+            </a>
+
+          </li>
+
+
+          <li>
+
+            <div class="contact-item">
+
+              <span class="contact-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
+                  <rect x="3" y="5.5" width="18" height="13" rx="1.5" />
+                  <path d="m4 6.5 8 6.5 8-6.5" />
+                </svg>
+              </span>
+
+              <div>
+                <strong>E-mail</strong>
+                <p>contato@artevaso.com.br</p>
+              </div>
+
             </div>
 
           </li>
@@ -1169,51 +1207,47 @@
 
           <li>
 
-            <span class="contact-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
-                <rect x="3" y="5.5" width="18" height="13" rx="1.5" />
-                <path d="m4 6.5 8 6.5 8-6.5" />
-              </svg>
-            </span>
+            <a
+              class="contact-item"
+              href="https://www.instagram.com/arteevasojundiai?utm_source=ig_web_button_share_sheet&stkn=ZDNlZDc0MzIxNw=="
+              target="_blank"
+              rel="noopener"
+            >
 
-            <div>
-              <strong>E-mail</strong>
-              <p>contato@artevaso.com.br</p>
-            </div>
+              <span class="contact-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
+                  <rect x="3" y="3" width="18" height="18" rx="5" />
+                  <circle cx="12" cy="12" r="4" />
+                  <circle cx="17.5" cy="6.5" r="0.7" fill="currentColor" />
+                </svg>
+              </span>
 
-          </li>
+              <div>
+                <strong>Instagram</strong>
+                <p>@arteevasojundiai</p>
+              </div>
 
-
-          <li>
-
-            <span class="contact-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
-                <rect x="3" y="3" width="18" height="18" rx="5" />
-                <circle cx="12" cy="12" r="4" />
-                <circle cx="17.5" cy="6.5" r="0.7" fill="currentColor" />
-              </svg>
-            </span>
-
-            <div>
-              <strong>Instagram</strong>
-              <p>@artevaso_terrarios</p>
-            </div>
+            </a>
 
           </li>
 
 
           <li>
 
-            <span class="contact-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
-                <path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21Z" />
-                <circle cx="12" cy="9.5" r="2.3" />
-              </svg>
-            </span>
+            <div class="contact-item">
 
-            <div>
-              <strong>Localização</strong>
-              <p>Jundiaí – SP</p>
+              <span class="contact-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
+                  <path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21Z" />
+                  <circle cx="12" cy="9.5" r="2.3" />
+                </svg>
+              </span>
+
+              <div>
+                <strong>Localização</strong>
+                <p>Jundiaí – SP</p>
+              </div>
+
             </div>
 
           </li>
@@ -1223,11 +1257,16 @@
       </div>
 
 
-      <!-- LADO DIREITO — FORMULÁRIO -->
+      <!-- LADO DIREITO — FORMULÁRIO
+           (ao enviar, abre o WhatsApp com
+           todos os dados preenchidos) -->
 
       <div class="contact-form-wrapper" data-reveal>
 
-        <form class="contact-form">
+        <form
+          class="contact-form"
+          id="contactForm"
+        >
 
           <div class="form-row">
 

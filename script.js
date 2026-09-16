@@ -1006,14 +1006,90 @@ document.addEventListener(
 
 
     /* =====================================================
-       TERRÁRIO PRINCIPAL
-       ANIMAÇÃO DE SCROLL (HERO → EXPERIÊNCIA)
+       FORMULÁRIO DE CONTATO → WHATSAPP
+       (abre a conversa com todos os dados
+       preenchidos no formulário)
+    ====================================================== */
 
-       O terrário é um elemento fixo. A cada frame
-       calculamos, a partir do scroll real, onde ele
-       deve estar entre a posição inicial (palco da
-       hero) e a posição final (espaço central entre
-       os quatro vasos do fundo da segunda seção).
+    const WHATSAPP_NUMBER = "5511976052590";
+
+    const contactForm =
+      document.querySelector(
+        "#contactForm"
+      );
+
+
+    if (contactForm) {
+
+      contactForm.addEventListener(
+        "submit",
+        (event) => {
+
+          event.preventDefault();
+
+
+          const data =
+            new FormData(contactForm);
+
+
+          const field = (name) =>
+            String(data.get(name) || "")
+              .trim();
+
+
+          const lines = [
+            "Olá! Vim pelo site Arte Vaso Terrários.",
+            "",
+            `*Nome:* ${field("nome")}`,
+            `*E-mail:* ${field("email")}`,
+            `*Telefone:* ${field("telefone") || "-"}`,
+            `*Assunto:* ${field("assunto") || "-"}`,
+            "",
+            "*Mensagem:*",
+            field("mensagem")
+          ];
+
+
+          const url =
+            `https://wa.me/${WHATSAPP_NUMBER}` +
+            `?text=${encodeURIComponent(lines.join("\n"))}`;
+
+
+          const opened =
+            window.open(
+              url,
+              "_blank",
+              "noopener"
+            );
+
+
+          /*
+            Alguns navegadores (principalmente
+            no celular) bloqueiam o window.open:
+            nesse caso navegamos na mesma aba.
+          */
+
+          if (!opened) {
+            window.location.href = url;
+          }
+
+        }
+      );
+
+    }
+
+
+
+    /* =====================================================
+       TERRÁRIO PRINCIPAL
+       ANIMAÇÃO DE SCROLL (EXPERIÊNCIA → CUIDADOS)
+
+       O terrário é um elemento fixo. Ele nasce
+       entre os quatro vasos do fundo da seção de
+       experiência e, conforme o scroll, viaja até
+       o centro do palco da seção de cuidados.
+       Ao pousar, as linhas curvas são desenhadas
+       de trás dele até os cards de cuidado.
     ====================================================== */
 
     const terrariumFloat =
@@ -1031,11 +1107,6 @@ document.addEventListener(
         "#terrariumShadow"
       );
 
-    const heroStage =
-      document.querySelector(
-        "#heroStage"
-      );
-
     const universeStage =
       document.querySelector(
         "#universeStage"
@@ -1046,15 +1117,229 @@ document.addEventListener(
         ".universe-background"
       );
 
+    const careDiagram =
+      document.querySelector(
+        "#careDiagram"
+      );
+
+    const careStage =
+      document.querySelector(
+        "#careStage"
+      );
+
+    const careLines =
+      document.querySelector(
+        "#careLines"
+      );
+
+    const careCards =
+      document.querySelectorAll(
+        ".care-card"
+      );
+
+
+
+    /* =================================================
+       LINHAS CURVAS DOS CUIDADOS
+       (uma curva por card, começando no centro
+       do palco — atrás do terrário — e chegando
+       na borda interna de cada card)
+    ================================================== */
+
+    const SVG_NS =
+      "http://www.w3.org/2000/svg";
+
+    const careLineElements = [];
+
+
+    function buildCareLines() {
+
+      if (
+        !careLines ||
+        !careCards.length
+      ) {
+        return;
+      }
+
+
+      careCards.forEach(
+        (card) => {
+
+          const path =
+            document.createElementNS(
+              SVG_NS,
+              "path"
+            );
+
+          path.setAttribute(
+            "class",
+            "care-line"
+          );
+
+
+          const dot =
+            document.createElementNS(
+              SVG_NS,
+              "circle"
+            );
+
+          dot.setAttribute(
+            "class",
+            "care-dot"
+          );
+
+          dot.setAttribute(
+            "r",
+            "3.5"
+          );
+
+
+          careLines.appendChild(path);
+
+          careLines.appendChild(dot);
+
+
+          careLineElements.push({
+            card,
+            path,
+            dot
+          });
+
+        }
+      );
+
+    }
+
+
+    function drawCareLines() {
+
+      if (
+        !careLines ||
+        !careDiagram ||
+        !careStage ||
+        !careLineElements.length
+      ) {
+        return;
+      }
+
+
+      const diagramRect =
+        careDiagram.getBoundingClientRect();
+
+      const stageRect =
+        careStage.getBoundingClientRect();
+
+
+      if (
+        !diagramRect.width ||
+        !diagramRect.height
+      ) {
+        return;
+      }
+
+
+      careLines.setAttribute(
+        "viewBox",
+        `0 0 ${diagramRect.width} ${diagramRect.height}`
+      );
+
+
+      /*
+        Centro do vidro = centro do palco.
+      */
+
+      const cx =
+        stageRect.left +
+        stageRect.width / 2 -
+        diagramRect.left;
+
+      const cy =
+        stageRect.top +
+        stageRect.height / 2 -
+        diagramRect.top;
+
+
+      careLineElements.forEach(
+        ({ card, path, dot }) => {
+
+          const rect =
+            card.getBoundingClientRect();
+
+
+          const isLeft =
+            card.closest(
+              ".care-column-left"
+            ) !== null;
+
+
+          /*
+            A linha chega na borda interna
+            do card (direita para os cards
+            da esquerda e vice-versa).
+          */
+
+          const ax =
+            (isLeft ? rect.right : rect.left) -
+            diagramRect.left;
+
+          const ay =
+            rect.top +
+            rect.height / 2 -
+            diagramRect.top;
+
+
+          const dx =
+            ax - cx;
+
+
+          const d =
+            `M ${cx.toFixed(1)} ${cy.toFixed(1)} ` +
+            `C ${(cx + dx * 0.55).toFixed(1)} ${cy.toFixed(1)}, ` +
+            `${(cx + dx * 0.5).toFixed(1)} ${ay.toFixed(1)}, ` +
+            `${ax.toFixed(1)} ${ay.toFixed(1)}`;
+
+
+          path.setAttribute("d", d);
+
+
+          const length =
+            path.getTotalLength();
+
+          path.style.setProperty(
+            "--len",
+            length.toFixed(1)
+          );
+
+
+          dot.setAttribute(
+            "cx",
+            ax.toFixed(1)
+          );
+
+          dot.setAttribute(
+            "cy",
+            ay.toFixed(1)
+          );
+
+        }
+      );
+
+    }
+
+
+    buildCareLines();
+
+
 
     if (
       terrariumFloat &&
       terrariumImage &&
       terrariumShadow &&
-      heroStage &&
       universeStage &&
       universeBackground &&
-      universeSection
+      universeSection &&
+      careDiagram &&
+      careStage
     ) {
 
       /* =================================================
@@ -1108,14 +1393,14 @@ document.addEventListener(
 
 
       /*
-        Largura do vidro ao pousar, em fração
-        da largura renderizada do fundo
+        Largura do vidro na seção de experiência,
+        em fração da largura renderizada do fundo
         (desktop / modo palco).
       */
 
-      const LANDING_BOWL_RATIO = 0.26;
+      const START_BOWL_RATIO = 0.26;
 
-      const LANDING_BOWL_RATIO_STAGE = 0.235;
+      const START_BOWL_RATIO_STAGE = 0.235;
 
 
       /*
@@ -1125,6 +1410,14 @@ document.addEventListener(
       const MAX_TILT = 9;   /* rotate (Z)  */
 
       const MAX_TURN = 22;  /* rotateY     */
+
+
+      /*
+        A partir de qual progresso as linhas
+        dos cuidados são desenhadas.
+      */
+
+      const DRAW_LINES_AT = 0.9;
 
 
       const stageQuery =
@@ -1256,9 +1549,6 @@ document.addEventListener(
 
       function measure() {
 
-        const viewportW =
-          window.innerWidth;
-
         const viewportH =
           window.innerHeight;
 
@@ -1267,62 +1557,7 @@ document.addEventListener(
 
 
 
-        /* ---------- HERO: POSIÇÃO INICIAL ---------- */
-
-        const heroRect =
-          heroStage.getBoundingClientRect();
-
-
-        const isMobile =
-          viewportW <= 600;
-
-
-        /*
-          Limite de largura da imagem na hero:
-          no tablet o vidro não deve encostar
-          nas bordas da tela.
-        */
-
-        const maxStartWidth =
-          isMobile
-            ? viewportW - 28
-            : Math.min(
-                1040,
-                (viewportW * 0.72) / BOWL_W
-              );
-
-
-        /*
-          O vidro precisa caber no palco
-          da hero, em largura e altura.
-        */
-
-        const startWidth =
-          Math.max(
-            180,
-            Math.min(
-              heroRect.width / BOWL_W,
-              (heroRect.height / BOWL_H) * IMAGE_RATIO,
-              maxStartWidth
-            )
-          );
-
-
-        state.start.cx =
-          heroRect.left +
-          heroRect.width / 2;
-
-        state.start.cy =
-          heroRect.top +
-          scrollY +
-          heroRect.height / 2;
-
-        state.start.width =
-          startWidth;
-
-
-
-        /* ---------- SEGUNDA SEÇÃO: POSIÇÃO FINAL ---------- */
+        /* ---------- EXPERIÊNCIA: POSIÇÃO INICIAL ---------- */
 
         const sectionRect =
           universeSection.getBoundingClientRect();
@@ -1461,28 +1696,28 @@ document.addEventListener(
         }
 
 
-        const landingBowlW =
+        const startBowlW =
           clamp(
             box.w *
             (
               stageQuery.matches
-                ? LANDING_BOWL_RATIO_STAGE
-                : LANDING_BOWL_RATIO
+                ? START_BOWL_RATIO_STAGE
+                : START_BOWL_RATIO
             ),
             170,
             520
           );
 
 
-        state.end.width =
-          landingBowlW / BOWL_W;
+        state.start.width =
+          startBowlW / BOWL_W;
 
-        state.end.cx =
+        state.start.cx =
           sectionRect.left +
           box.x +
           FOCUS.x * box.w;
 
-        state.end.cy =
+        state.start.cy =
           sectionRect.top +
           scrollY +
           box.y +
@@ -1490,20 +1725,60 @@ document.addEventListener(
 
 
 
+        /* ---------- CUIDADOS: POSIÇÃO FINAL ---------- */
+
+        const careRect =
+          careStage.getBoundingClientRect();
+
+
+        /*
+          O vidro precisa caber no palco,
+          em largura e altura.
+        */
+
+        const endWidth =
+          Math.max(
+            180,
+            Math.min(
+              careRect.width / BOWL_W,
+              (careRect.height / BOWL_H) * IMAGE_RATIO
+            )
+          );
+
+
+        state.end.width =
+          endWidth;
+
+        state.end.cx =
+          careRect.left +
+          careRect.width / 2;
+
+        state.end.cy =
+          careRect.top +
+          scrollY +
+          careRect.height / 2;
+
+
+
         /* ---------- INTERVALO DE SCROLL ---------- */
 
         /*
-          A viagem começa no topo da página e
-          termina quando o ponto de pouso está
-          no centro da tela.
+          A viagem começa quando o ponto entre
+          os vasos passa do centro da tela e
+          termina quando o palco dos cuidados
+          está centralizado na tela.
         */
 
-        state.scrollStart = 0;
+        state.scrollStart =
+          Math.max(
+            0,
+            state.start.cy - viewportH * 0.45
+          );
 
         state.scrollEnd =
           Math.max(
-            state.end.cy - viewportH * 0.5,
-            viewportH * 0.6
+            state.scrollStart + viewportH * 0.4,
+            state.end.cy - viewportH * 0.5
           );
 
 
@@ -1550,6 +1825,12 @@ document.addEventListener(
             `${state.shadowBaseH}px`;
 
         }
+
+
+
+        /* ---------- LINHAS DOS CUIDADOS ---------- */
+
+        drawCareLines();
 
       }
 
@@ -1705,7 +1986,7 @@ document.addEventListener(
 
 
 
-        /* ---------- SOMBRA (SÓ NA MESA DA HERO) ---------- */
+        /* ---------- SOMBRA (SÓ AO POUSAR NOS CUIDADOS) ---------- */
 
         const shadowW =
           width * BOWL_W * 0.92;
@@ -1737,18 +2018,28 @@ document.addEventListener(
 
 
         /*
-          A sombra some logo no início da
-          viagem: no ar, não há mesa.
+          Entre os vasos flutuantes não há chão;
+          a sombra só aparece no fim da viagem,
+          quando o terrário pousa na seção branca.
         */
 
         const shadowFade =
-          1 - clamp(progress * 2.4, 0, 1);
+          clamp((progress - 0.7) / 0.3, 0, 1);
 
 
         terrariumShadow.style.opacity =
           (
-            Math.pow(shadowFade, 2) * 0.9
+            Math.pow(shadowFade, 2) * 0.55
           ).toFixed(3);
+
+
+
+        /* ---------- LINHAS DOS CUIDADOS ---------- */
+
+        careDiagram.classList.toggle(
+          "is-drawn",
+          progress >= DRAW_LINES_AT
+        );
 
 
 
@@ -2006,6 +2297,24 @@ document.addEventListener(
         );
 
       }
+
+    } else if (careDiagram) {
+
+      /*
+        Sem o terrário animado, os cards
+        de cuidado aparecem direto.
+      */
+
+      careDiagram.classList.add(
+        "is-drawn"
+      );
+
+      drawCareLines();
+
+      window.addEventListener(
+        "resize",
+        drawCareLines
+      );
 
     }
 
