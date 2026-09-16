@@ -496,6 +496,74 @@ document.addEventListener(
 
 
     /* =====================================================
+       PRODUTOS — ENTRADA UM A UM
+       (a seção ganha a classe ao aparecer na
+       tela; o CSS escalona os cards)
+    ====================================================== */
+
+    const productsSection =
+      document.querySelector(
+        ".products-section"
+      );
+
+
+    if (productsSection) {
+
+      const productsObserver =
+        new IntersectionObserver(
+          (entries, observer) => {
+
+            entries.forEach(
+              (entry) => {
+
+                if (!entry.isIntersecting) {
+                  return;
+                }
+
+
+                productsSection.classList.add(
+                  "is-visible"
+                );
+
+
+                /*
+                  Depois que todos entraram,
+                  o hover volta a ser imediato.
+                */
+
+                setTimeout(
+                  () => {
+
+                    productsSection.classList.add(
+                      "is-settled"
+                    );
+
+                  },
+                  1500
+                );
+
+
+                observer.disconnect();
+
+              }
+            );
+
+          },
+          {
+            threshold: 0.25
+          }
+        );
+
+
+      productsObserver.observe(
+        productsSection
+      );
+
+    }
+
+
+
+    /* =====================================================
        NOVA SEÇÃO
        CONTADORES
     ====================================================== */
@@ -1140,16 +1208,50 @@ document.addEventListener(
 
 
     /* =================================================
-       LINHAS CURVAS DOS CUIDADOS
+       LINHAS DE LUZ DOS CUIDADOS
        (uma curva por card, começando no centro
        do palco — atrás do terrário — e chegando
-       na borda interna de cada card)
+       na borda interna de cada card; uma luz
+       verde percorre a linha e "acende" o card
+       ao chegar)
     ================================================== */
 
     const SVG_NS =
       "http://www.w3.org/2000/svg";
 
     const careLineElements = [];
+
+    const careReducedMotion =
+      window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      );
+
+
+    function svgEl(
+      name,
+      attrs
+    ) {
+
+      const el =
+        document.createElementNS(
+          SVG_NS,
+          name
+        );
+
+      Object.keys(attrs).forEach(
+        (key) => {
+
+          el.setAttribute(
+            key,
+            attrs[key]
+          );
+
+        }
+      );
+
+      return el;
+
+    }
 
 
     function buildCareLines() {
@@ -1165,47 +1267,144 @@ document.addEventListener(
       careCards.forEach(
         (card) => {
 
+          const group =
+            svgEl("g", {
+              class: "care-line-group"
+            });
+
+
+          const glow =
+            svgEl("path", {
+              class: "care-line-glow"
+            });
+
           const path =
-            document.createElementNS(
-              SVG_NS,
-              "path"
-            );
+            svgEl("path", {
+              class: "care-line"
+            });
 
-          path.setAttribute(
-            "class",
-            "care-line"
-          );
-
+          const ring =
+            svgEl("circle", {
+              class: "care-ring",
+              r: "6"
+            });
 
           const dot =
-            document.createElementNS(
-              SVG_NS,
-              "circle"
-            );
+            svgEl("circle", {
+              class: "care-dot",
+              r: "3.5"
+            });
 
-          dot.setAttribute(
-            "class",
-            "care-dot"
-          );
+          const halo =
+            svgEl("circle", {
+              class: "care-halo",
+              r: "9"
+            });
 
-          dot.setAttribute(
-            "r",
-            "3.5"
-          );
+          const light =
+            svgEl("circle", {
+              class: "care-light",
+              r: "3"
+            });
 
 
-          careLines.appendChild(path);
+          group.appendChild(glow);
+          group.appendChild(path);
+          group.appendChild(ring);
+          group.appendChild(dot);
+          group.appendChild(halo);
+          group.appendChild(light);
 
-          careLines.appendChild(dot);
+          careLines.appendChild(group);
 
 
           careLineElements.push({
             card,
+            group,
+            glow,
             path,
-            dot
+            ring,
+            dot,
+            halo,
+            light,
+            length: 0,
+            end: { x: 0, y: 0 },
+            progress: 0,
+            rafId: null
           });
 
         }
+      );
+
+    }
+
+
+
+    /*
+      Aplica um progresso (0 → 1) a uma linha:
+      desenha o traço até esse ponto e coloca
+      a luz na ponta do que já foi desenhado.
+    */
+
+    function setLineProgress(
+      item,
+      progress
+    ) {
+
+      item.progress = progress;
+
+
+      const length =
+        item.length;
+
+      const offset =
+        length * (1 - progress);
+
+
+      item.path.style.strokeDashoffset =
+        offset.toFixed(1);
+
+      item.glow.style.strokeDashoffset =
+        offset.toFixed(1);
+
+
+      let point =
+        item.end;
+
+
+      if (
+        length > 0 &&
+        progress < 1
+      ) {
+
+        point =
+          item.path.getPointAtLength(
+            length * progress
+          );
+
+      }
+
+
+      [item.halo, item.light].forEach(
+        (circle) => {
+
+          circle.setAttribute(
+            "cx",
+            point.x.toFixed(1)
+          );
+
+          circle.setAttribute(
+            "cy",
+            point.y.toFixed(1)
+          );
+
+        }
+      );
+
+
+      item.group.classList.toggle(
+        "is-travelling",
+        progress > 0 && progress < 1
       );
 
     }
@@ -1260,14 +1459,14 @@ document.addEventListener(
 
 
       careLineElements.forEach(
-        ({ card, path, dot }) => {
+        (item) => {
 
           const rect =
-            card.getBoundingClientRect();
+            item.card.getBoundingClientRect();
 
 
           const isLeft =
-            card.closest(
+            item.card.closest(
               ".care-column-left"
             ) !== null;
 
@@ -1299,27 +1498,198 @@ document.addEventListener(
             `${ax.toFixed(1)} ${ay.toFixed(1)}`;
 
 
-          path.setAttribute("d", d);
+          item.path.setAttribute("d", d);
+
+          item.glow.setAttribute("d", d);
 
 
-          const length =
-            path.getTotalLength();
+          /*
+            Com o SVG escondido (mobile) o
+            comprimento vem 0: a luz não é
+            desenhada, mas os cards ainda
+            acendem em sequência.
+          */
 
-          path.style.setProperty(
-            "--len",
-            length.toFixed(1)
+          item.length =
+            item.path.getTotalLength() || 0;
+
+          item.end =
+            { x: ax, y: ay };
+
+
+          [item.path, item.glow].forEach(
+            (el) => {
+
+              el.style.setProperty(
+                "--len",
+                item.length.toFixed(1)
+              );
+
+            }
           );
 
 
-          dot.setAttribute(
-            "cx",
-            ax.toFixed(1)
+          [item.dot, item.ring].forEach(
+            (circle) => {
+
+              circle.setAttribute(
+                "cx",
+                ax.toFixed(1)
+              );
+
+              circle.setAttribute(
+                "cy",
+                ay.toFixed(1)
+              );
+
+            }
           );
 
-          dot.setAttribute(
-            "cy",
-            ay.toFixed(1)
+
+          setLineProgress(
+            item,
+            item.progress
           );
+
+        }
+      );
+
+    }
+
+
+
+    /*
+      Liga/desliga a sequência: as luzes
+      saem de trás do terrário uma após a
+      outra; quando cada uma chega, o card
+      correspondente acende.
+    */
+
+    let careDrawn = false;
+
+
+    function setCareDrawn(drawn) {
+
+      if (
+        drawn === careDrawn ||
+        !careDiagram
+      ) {
+        return;
+      }
+
+      careDrawn = drawn;
+
+
+      careDiagram.classList.toggle(
+        "is-drawn",
+        drawn
+      );
+
+
+      const LIGHT_DELAY = 450;
+
+      const LIGHT_STAGGER = 380;
+
+      const LIGHT_DURATION = 1500;
+
+
+      careLineElements.forEach(
+        (item, index) => {
+
+          if (item.rafId !== null) {
+
+            cancelAnimationFrame(item.rafId);
+
+            item.rafId = null;
+
+          }
+
+
+          item.card.classList.remove("is-lit");
+
+          item.group.classList.remove("is-lit");
+
+
+          if (!drawn) {
+
+            setLineProgress(item, 0);
+
+            return;
+
+          }
+
+
+          function light() {
+
+            setLineProgress(item, 1);
+
+            item.card.classList.add("is-lit");
+
+            item.group.classList.add("is-lit");
+
+          }
+
+
+          if (careReducedMotion.matches) {
+
+            light();
+
+            return;
+
+          }
+
+
+          const startAt =
+            performance.now() +
+            LIGHT_DELAY +
+            index * LIGHT_STAGGER;
+
+
+          function step(now) {
+
+            item.rafId = null;
+
+
+            const t =
+              Math.min(
+                Math.max(
+                  (now - startAt) / LIGHT_DURATION,
+                  0
+                ),
+                1
+              );
+
+
+            /*
+              Sai devagar de trás do vidro
+              e acelera até o card.
+            */
+
+            const eased =
+              t < 0.5
+                ? 2 * t * t
+                : 1 - Math.pow(-2 * t + 2, 2) / 2;
+
+
+            setLineProgress(item, eased);
+
+
+            if (t < 1) {
+
+              item.rafId =
+                requestAnimationFrame(step);
+
+            } else {
+
+              light();
+
+            }
+
+          }
+
+
+          item.rafId =
+            requestAnimationFrame(step);
 
         }
       );
@@ -2036,8 +2406,7 @@ document.addEventListener(
 
         /* ---------- LINHAS DOS CUIDADOS ---------- */
 
-        careDiagram.classList.toggle(
-          "is-drawn",
+        setCareDrawn(
           progress >= DRAW_LINES_AT
         );
 
@@ -2305,11 +2674,9 @@ document.addEventListener(
         de cuidado aparecem direto.
       */
 
-      careDiagram.classList.add(
-        "is-drawn"
-      );
-
       drawCareLines();
+
+      setCareDrawn(true);
 
       window.addEventListener(
         "resize",
