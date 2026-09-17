@@ -1079,7 +1079,7 @@ document.addEventListener(
        preenchidos no formulário)
     ====================================================== */
 
-    const WHATSAPP_NUMBER = "5511976052590";
+    const WHATSAPP_NUMBER = "5511948568863";
 
     const contactForm =
       document.querySelector(
@@ -1109,7 +1109,6 @@ document.addEventListener(
             "Olá! Vim pelo site Arte Vaso Terrários.",
             "",
             `*Nome:* ${field("nome")}`,
-            `*E-mail:* ${field("email")}`,
             `*Telefone:* ${field("telefone") || "-"}`,
             `*Assunto:* ${field("assunto") || "-"}`,
             "",
@@ -1139,6 +1138,254 @@ document.addEventListener(
 
           if (!opened) {
             window.location.href = url;
+          }
+
+        }
+      );
+
+    }
+
+
+
+    /* =====================================================
+       MODAL DE VÍDEO
+       ("ASSISTA — Como funciona um terrário":
+       abre o vídeo no centro da tela; as
+       setas trocam entre os três vídeos)
+    ====================================================== */
+
+    const VIDEO_SOURCES = [
+      "assets/video-fazendo.mp4",
+      "assets/video-fazendo-1.mp4",
+      "assets/video-fazendo-2.mp4"
+    ];
+
+    const videoModal =
+      document.querySelector(
+        "#videoModal"
+      );
+
+    const videoLink =
+      document.querySelector(
+        "#universeVideoLink"
+      );
+
+    const videoPlayer =
+      document.querySelector(
+        "#videoModalPlayer"
+      );
+
+    const videoCounter =
+      document.querySelector(
+        "#videoModalCounter"
+      );
+
+    const videoDotsWrapper =
+      document.querySelector(
+        "#videoModalDots"
+      );
+
+    const videoPrev =
+      document.querySelector(
+        ".video-modal-prev"
+      );
+
+    const videoNext =
+      document.querySelector(
+        ".video-modal-next"
+      );
+
+
+    if (
+      videoModal &&
+      videoLink &&
+      videoPlayer
+    ) {
+
+      let videoIndex = 0;
+
+      let lastFocused = null;
+
+
+      const videoDots =
+        VIDEO_SOURCES.map(
+          (src, index) => {
+
+            const dot =
+              document.createElement("button");
+
+            dot.type = "button";
+
+            dot.className =
+              "video-modal-dot";
+
+            dot.setAttribute(
+              "aria-label",
+              `Vídeo ${index + 1}`
+            );
+
+            dot.addEventListener(
+              "click",
+              () => showVideo(index)
+            );
+
+            videoDotsWrapper.appendChild(dot);
+
+            return dot;
+
+          }
+        );
+
+
+      function showVideo(index) {
+
+        const total =
+          VIDEO_SOURCES.length;
+
+        videoIndex =
+          (index + total) % total;
+
+
+        videoPlayer.pause();
+
+        videoPlayer.src =
+          VIDEO_SOURCES[videoIndex];
+
+        videoPlayer.load();
+
+
+        /*
+          O autoplay pode ser bloqueado pelo
+          navegador: nesse caso o usuário
+          aperta o play nos controles.
+        */
+
+        const playing =
+          videoPlayer.play();
+
+        if (playing && playing.catch) {
+          playing.catch(() => {});
+        }
+
+
+        videoCounter.textContent =
+          `${videoIndex + 1} / ${total}`;
+
+        videoDots.forEach(
+          (dot, i) => {
+
+            dot.classList.toggle(
+              "active",
+              i === videoIndex
+            );
+
+          }
+        );
+
+      }
+
+
+      function openVideoModal() {
+
+        lastFocused =
+          document.activeElement;
+
+        videoModal.classList.add("is-open");
+
+        videoModal.setAttribute(
+          "aria-hidden",
+          "false"
+        );
+
+        document.body.classList.add(
+          "video-modal-open"
+        );
+
+        showVideo(videoIndex);
+
+        videoNext.focus();
+
+      }
+
+
+      function closeVideoModal() {
+
+        videoModal.classList.remove("is-open");
+
+        videoModal.setAttribute(
+          "aria-hidden",
+          "true"
+        );
+
+        document.body.classList.remove(
+          "video-modal-open"
+        );
+
+        videoPlayer.pause();
+
+
+        if (
+          lastFocused &&
+          lastFocused.focus
+        ) {
+          lastFocused.focus();
+        }
+
+      }
+
+
+      videoLink.addEventListener(
+        "click",
+        openVideoModal
+      );
+
+
+      videoPrev.addEventListener(
+        "click",
+        () => showVideo(videoIndex - 1)
+      );
+
+      videoNext.addEventListener(
+        "click",
+        () => showVideo(videoIndex + 1)
+      );
+
+
+      videoModal
+        .querySelectorAll("[data-video-close]")
+        .forEach(
+          (el) => {
+
+            el.addEventListener(
+              "click",
+              closeVideoModal
+            );
+
+          }
+        );
+
+
+      document.addEventListener(
+        "keydown",
+        (event) => {
+
+          if (
+            !videoModal.classList.contains("is-open")
+          ) {
+            return;
+          }
+
+
+          if (event.key === "Escape") {
+            closeVideoModal();
+          }
+
+          if (event.key === "ArrowLeft") {
+            showVideo(videoIndex - 1);
+          }
+
+          if (event.key === "ArrowRight") {
+            showVideo(videoIndex + 1);
           }
 
         }
@@ -1472,13 +1719,20 @@ document.addEventListener(
 
 
           /*
-            A linha chega na borda interna
-            do card (direita para os cards
-            da esquerda e vice-versa).
+            A linha entra um pouco pela borda
+            interna do card (direita para os
+            cards da esquerda e vice-versa):
+            como o card tem fundo opaco, a
+            bolinha e o anel de impacto ficam
+            escondidos atrás dele.
           */
 
+          const CARD_INSET = 22;
+
           const ax =
-            (isLeft ? rect.right : rect.left) -
+            (isLeft
+              ? rect.right - CARD_INSET
+              : rect.left + CARD_INSET) -
             diagramRect.left;
 
           const ay =

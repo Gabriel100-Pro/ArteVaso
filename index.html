@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
 
-  <meta
+  <meta 
     name="viewport"
     content="width=device-width, initial-scale=1.0"
   >
@@ -365,7 +365,7 @@
 
               <a
                 class="product-link"
-                href="https://wa.me/5511976052590?text=Ol%C3%A1!%20Tenho%20interesse%20no%20terr%C3%A1rio%20Floresta."
+                href="https://wa.me/5511948568863?text=Ol%C3%A1!%20Tenho%20interesse%20no%20terr%C3%A1rio%20Floresta."
                 target="_blank"
                 rel="noopener"
                 draggable="false"
@@ -405,7 +405,7 @@
 
               <a
                 class="product-link"
-                href="https://wa.me/5511976052590?text=Ol%C3%A1!%20Tenho%20interesse%20no%20terr%C3%A1rio%20Deserto."
+                href="https://wa.me/5511948568863?text=Ol%C3%A1!%20Tenho%20interesse%20no%20terr%C3%A1rio%20Deserto."
                 target="_blank"
                 rel="noopener"
                 draggable="false"
@@ -445,7 +445,7 @@
 
               <a
                 class="product-link"
-                href="https://wa.me/5511976052590?text=Ol%C3%A1!%20Tenho%20interesse%20no%20terr%C3%A1rio%20Tropical."
+                href="https://wa.me/5511948568863?text=Ol%C3%A1!%20Tenho%20interesse%20no%20terr%C3%A1rio%20Tropical."
                 target="_blank"
                 rel="noopener"
                 draggable="false"
@@ -485,7 +485,7 @@
 
               <a
                 class="product-link"
-                href="https://wa.me/5511976052590?text=Ol%C3%A1!%20Tenho%20interesse%20no%20terr%C3%A1rio%20Minimalista."
+                href="https://wa.me/5511948568863?text=Ol%C3%A1!%20Tenho%20interesse%20no%20terr%C3%A1rio%20Minimalista."
                 target="_blank"
                 rel="noopener"
                 draggable="false"
@@ -525,7 +525,7 @@
 
               <a
                 class="product-link"
-                href="https://wa.me/5511976052590?text=Ol%C3%A1!%20Tenho%20interesse%20no%20terr%C3%A1rio%20Mata%20Atl%C3%A2ntica."
+                href="https://wa.me/5511948568863?text=Ol%C3%A1!%20Tenho%20interesse%20no%20terr%C3%A1rio%20Mata%20Atl%C3%A2ntica."
                 target="_blank"
                 rel="noopener"
                 draggable="false"
@@ -666,12 +666,18 @@
 
       <!-- VÍDEO / PLAY -->
 
-      <div class="universe-video-link">
+      <div
+        class="universe-video-link"
+        id="universeVideoLink"
+      >
 
         <button
           type="button"
           class="universe-play"
+          id="universePlay"
           aria-label="Assistir como funciona um terrário"
+          aria-haspopup="dialog"
+          aria-controls="videoModal"
         >
 
           <span>
@@ -1162,7 +1168,7 @@
 
             <a
               class="contact-item"
-              href="https://wa.me/5511976052590"
+              href="https://wa.me/5511948568863"
               target="_blank"
               rel="noopener"
             >
@@ -1176,31 +1182,10 @@
 
               <div>
                 <strong>WhatsApp</strong>
-                <p>(11) 97605-2590</p>
+                <p>(11) 94856-8863</p>
               </div>
 
             </a>
-
-          </li>
-
-
-          <li>
-
-            <div class="contact-item">
-
-              <span class="contact-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3">
-                  <rect x="3" y="5.5" width="18" height="13" rx="1.5" />
-                  <path d="m4 6.5 8 6.5 8-6.5" />
-                </svg>
-              </span>
-
-              <div>
-                <strong>E-mail</strong>
-                <p>contato@artevaso.com.br</p>
-              </div>
-
-            </div>
 
           </li>
 
@@ -1275,22 +1260,19 @@
             </div>
 
             <div class="form-field">
-              <input type="email" name="email" placeholder="E-mail" required>
+              <input type="tel" name="telefone" placeholder="Telefone">
             </div>
 
           </div>
 
 
-          <div class="form-row">
-
-            <div class="form-field">
-              <input type="tel" name="telefone" placeholder="Telefone">
-            </div>
-
-            <div class="form-field">
-              <input type="text" name="assunto" placeholder="Assunto">
-            </div>
-
+          <div class="form-field form-field-select">
+            <select name="assunto" aria-label="Assunto">
+              <option value="Solicitar orçamento de terrário" selected>Solicitar orçamento de terrário</option>
+              <option value="Terrário personalizado">Terrário personalizado</option>
+              <option value="Dúvidas sobre cuidados">Dúvidas sobre cuidados</option>
+              <option value="Outro assunto">Outro assunto</option>
+            </select>
           </div>
 
 
@@ -1317,6 +1299,92 @@
     </div>
 
   </section>
+
+
+
+  <!-- =====================================================
+       MODAL DE VÍDEO
+       (abre ao clicar em "ASSISTA — Como funciona
+       um terrário"; as setas trocam entre os
+       três vídeos da pasta assets)
+  ====================================================== -->
+
+  <div
+    class="video-modal"
+    id="videoModal"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Como funciona um terrário"
+    aria-hidden="true"
+  >
+
+    <div
+      class="video-modal-backdrop"
+      data-video-close
+    ></div>
+
+
+    <div class="video-modal-dialog">
+
+      <button
+        type="button"
+        class="video-modal-close"
+        aria-label="Fechar vídeo"
+        data-video-close
+      >
+        ×
+      </button>
+
+
+      <button
+        type="button"
+        class="video-modal-arrow video-modal-prev"
+        aria-label="Vídeo anterior"
+      >
+        ←
+      </button>
+
+
+      <div class="video-modal-stage">
+
+        <video
+          id="videoModalPlayer"
+          controls
+          playsinline
+          preload="metadata"
+        ></video>
+
+      </div>
+
+
+      <button
+        type="button"
+        class="video-modal-arrow video-modal-next"
+        aria-label="Próximo vídeo"
+      >
+        →
+      </button>
+
+
+      <div class="video-modal-footer">
+
+        <span
+          class="video-modal-counter"
+          id="videoModalCounter"
+        >
+          1 / 3
+        </span>
+
+        <div
+          class="video-modal-dots"
+          id="videoModalDots"
+        ></div>
+
+      </div>
+
+    </div>
+
+  </div>
 
 
 
